@@ -9,8 +9,37 @@
   <div id="content">
     <button id="btn_test">Say Hello</button> <!-- boton -->
   </div>
+  <div class="divPreview">
+    <canvas id="cnvsPreview" width="175" height="200" />
+  </div>
+
+  <!--surround the select box with a "custom-select" DIV element. Remember to set the width:-->
+  <div class="custom-select" style="width:200px;">
+    <select>
+      <option value="0">Select car:</option>
+      <option value="1">Audi</option>
+      <option value="2">BMW</option>
+      <option value="3">Citroen</option>
+      <option value="4">Ford</option>
+      <option value="5">Honda</option>
+      <option value="6">Jaguar</option>
+      <option value="7">Land Rover</option>
+      <option value="8">Mercedes</option>
+      <option value="9">Mini</option>
+      <option value="10">Nissan</option>
+      <option value="11">Toyota</option>
+      <option value="12">Volvo</option>
+    </select>
+  </div>
+
+  <p>Image to use:</p>
+  <!--<img id="airHockey" width="369" height="369" src="img\VRHockeyIcon.png" alt="Air Hockey Icon">-->  <!-- recorda ficar el .png al final -->
+
+
   <!-- carga los scripts -->
   <!-- El orden de carga importa recuerda -->
   <script src="js/libs/CSInterface.js"></script>  <!-- mediador entre photoshop y los paneles -->
+  <script src="js/libs/jquery-2.0.2.min.js"></script> <!-- nos da comandos extra de acceso como $, etc -->
+  <script src="js/customSelect.js"></script>
   <script src="js/main.js"></script> <!-- hace una instancia de CSInterface y luego le mete al boton un eventlistener para que ejecute una funcion de photoshop.jsx -->
 </body>

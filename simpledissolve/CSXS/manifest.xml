@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+* Copyright 2014 Adobe Inc.
+* All Rights Reserved.
+*
+* NOTICE: Adobe permits you to use, modify, and distribute this file in
+* accordance with the terms of the Adobe license agreement accompanying
+* it. If you have received this file from a source other than Adobe,
+* then your use, modification, or distribution of it requires the prior
+* written permission of Adobe. 
+**************************************************************************/
+-->
+<ExtensionManifest Version="5.0" ExtensionBundleId="com.adobe.SimpleDissolve" ExtensionBundleVersion="1.0.0"
+ ExtensionBundleName="SimpleDissolve" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="com.adobe.SimpleDissolve.ApplyFilter" Version="1.0" />
+		<Extension Id="com.adobe.SimpleDissolve.UI" Version="1.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="PHXS" Version="[19.0,99.0]" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="5.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="com.adobe.SimpleDissolve.ApplyFilter">
+			<DispatchInfo>
+				<Resources>
+					<MainPath>./ApplyFilter/index.html</MainPath>
+					<ScriptPath>./ApplyFilter/jsx/hostscript.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>false</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>Custom</Type>
+					<Geometry>
+						<Size>
+							<Height>1</Height>
+							<Width>1</Width>
+						</Size>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+		<Extension Id="com.adobe.SimpleDissolve.UI">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./UI/index.html</MainPath>
+				<ScriptPath>./UI/jsx/hostscript.jsx</ScriptPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+					<StartOn>
+						<Event>com.adobe.event.loadSimpleDissolve</Event>
+					</StartOn>
+				</Lifecycle>
+				<UI>
+					<Type>ModalDialog</Type>
+					<Menu></Menu>
+					<Geometry>
+						<Size>
+							<Height>220</Height>
+							<Width>450</Width>							
+						</Size>
+						<MaxSize>
+							<Height></Height>
+							<Width></Width>
+						</MaxSize>
+						<MinSize>
+							<Height></Height>
+							<Width></Width>
+						</MinSize>						
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>
