@@ -46,6 +46,7 @@
 		getDefaultSettings();
 		csInterface.evalScript("readPreviewInfo()", drawPreviewCallback); //csInterface.evalScript('jsx_func_in_jsx_file(' + passing_param + ')', function(response) {  handing response  });
 		$('#iDissolvePc').focus(); //para hacer focus al editar el porcentaje nada mas entrar al panel //https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_event_focus_ref
+    
 	}
 
 	//------------------------------------------------------------------------------
@@ -129,7 +130,7 @@
 			var x = gFittedSelectionRect.x;
 			var y = gFittedSelectionRect.y;
 		} else {
-			var previewData = previewContext.getImageData(gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height);
+			var previewData = previewContext.getImageData(gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height); // get image data te hace una copia de los limites que has seleccionado
 			var x = gFittedPreviewRect.x;
 			var y = gFittedPreviewRect.y;
 		}
@@ -140,14 +141,14 @@
         //porque dissolvePixel no se inicializa?
 				dissolvePixel = (selectionData.data[dataIdx + 3] != 0 && doDissolvePixel());  //si el pixel esta en la sellecion y se pide que se haga el dissolve devolvemos true
 			} else {
-				dissolvePixel = doDissolvePixel();
+				dissolvePixel = doDissolvePixel(); //true or flase
 			}
 			if (dissolvePixel) {
 				switch (disposition) { //coloreamos segun lo que hemos elegido
 					case "0":
-						previewData.data[dataIdx] = 255;
-						previewData.data[dataIdx + 1] = 255;
-						previewData.data[dataIdx + 2] = 255;
+						previewData.data[dataIdx] = 255; //Red
+						previewData.data[dataIdx + 1] = 255; //Green
+						previewData.data[dataIdx + 2] = 255; //Blue
 						break;
 					case "1":
 						previewData.data[dataIdx] = (gPreviewInfo.isMask == '1' ? 69 : 0);
@@ -165,7 +166,7 @@
 						previewData.data[dataIdx + 2] = (gPreviewInfo.isMask == '1' ? 200 : 0);
 						break;
 				}
-				previewData.data[dataIdx + 3] = 255; //pintamos de blanco siempre el 4to?
+				previewData.data[dataIdx + 3] = 255; //el canal alpha (transparencias) = totalmente opaco
 			}
 			dataIdx = dataIdx + 4; //pintamos de 4 pixeles en 4
 		}
@@ -194,7 +195,7 @@
 			width: cnvsWidth,
 			height: cnvsHeight
 		}, {
-			width: gPreviewInfo.width,
+			width: gPreviewInfo.width, //aqui si que no da 0
 			height: gPreviewInfo.height
 		});
 		gFittedPreviewRect.width = previewSize.width;
@@ -205,10 +206,13 @@
 		gImagePreviewData = new Image();
 		var context = $('#cnvsPreview')[0].getContext("2d");
 		gImagePreviewData.onload = function () { //dibujamos imagen en el canvas cuando se carga la pagina
+			context.fillStyle = "#FFBBFF";
+			context.fillRect( 0, 0, cnvsWidth, cnvsHeight);
+
 			context.drawImage(gImagePreviewData, gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height); //context.drawImage(img,x,y,width,height);
 			updatePreview();
 		};
-		gImagePreviewData.src = gPreviewInfo.url; //le ponemos el url de la imagen que queremos dibujar
+		gImagePreviewData.src = "img/redmallet.png"; //gPreviewInfo.url; //le ponemos el url de la imagen que queremos dibujar
 	}
 
 	//------------------------------------------------------------------------------
@@ -233,7 +237,7 @@
 	}
 
 	//------------------------------------------------------------------------------
-	// loadSelection - draws the selection offscreen.
+	// loadSelection - draws the selection offscreen. DIBUJA LA SELECCION O UN MARCO ALREDEDOR DE LA SELECCION?
 	//------------------------------------------------------------------------------
 
 	function loadSelection() {
@@ -265,8 +269,8 @@
 		gPreviewInfo.percent = parseFloat($('#iDissolvePc').val());
 		storeDefaultSettings();
 		if (gPreviewInfo.percent > 0) {
-			csInterface.requestOpenExtension("com.adobe.SimpleDissolve.ApplyFilter", "")
-			setTimeout(function () {
+			csInterface.requestOpenExtension("com.adobe.SimpleDissolve.ApplyFilter", "") //function(extensionId, params)
+			setTimeout(function () { //hace la funcion despues de medio segundo
 				dispatchEvent("com.adobe.event.applyDissolve", JSON.stringify(gPreviewInfo))
 			}, 500)
 		} else {

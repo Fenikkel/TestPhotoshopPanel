@@ -1,3 +1,19 @@
+canvas {
+  /* for display purposes */
+  border: 3px solid #73AD21;
+
+  display: block;
+  float: left;
+}
+
+.divPreview {
+  /* for display purposes */
+  border: 1px solid blue;
+
+  /* make sure we contain the floats */
+  overflow: auto;
+}
+
 /*the container must be positioned relative:*/
 .custom-select {
   position: relative;

@@ -9,7 +9,7 @@
  * accordance with the terms of the Adobe license agreement accompanying
  * it. If you have received this file from a source other than Adobe,
  * then your use, modification, or distribution of it requires the prior
- * written permission of Adobe. 
+ * written permission of Adobe.
  **************************************************************************/
 
 //------------------------------------------------------------------------------
@@ -38,9 +38,10 @@ blockRefresh();
 // applyDissolveFilter()
 //------------------------------------------------------------------------------
 
-function applyDissolve(in_isLayerMask) {
-	activeDocument.suspendHistory("Simple Dissolve", "applyDissolveFilter(" + in_isLayerMask + ")");
-	return gApplySuccessful;
+function applyDissolve(in_isLayerMask) { //true o false (es string creo)
+  //app.activeDocument?
+	activeDocument.suspendHistory("Simple Dissolve", "applyDissolveFilter(" + in_isLayerMask + ")"); // suspendHistory(historyString, javascriptString) //permite hacer un undo de muchas acciones. primer parametro las acciones del history state y el segundo las acciones hechas por JS (o algo que ha de realizar mientras es suspendido?)
+	return gApplySuccessful;  //applyDissolveFilter se apliga mientras sale la barra de progreso y luego da resultado verdadero o falso
 }
 
 //------------------------------------------------------------------------------
@@ -193,7 +194,7 @@ function hideLayers(in_doc) {
 }
 
 //------------------------------------------------------------------------------
-// showMaskChannel - Shows or hides the layer mask channel 
+// showMaskChannel - Shows or hides the layer mask channel
 // in_show = true to show the layer mask channel (and false to hide)
 //------------------------------------------------------------------------------
 
@@ -228,17 +229,17 @@ function dispatchEvent(in_type, in_message) {
 // to the layer or selection
 //------------------------------------------------------------------------------
 
-function storeDissolveImage(in_contents) {
+function storeDissolveImage(in_contents) { //in contents tiene el formato y la compression
 	var retVal = false
 	var dissolveFile = File(Folder.temp + "/dissolve.png")
-	if (dissolveFile.exists) {
+	if (dissolveFile.exists) { //si existe lo borramos
 		dissolveFile.remove();
 	}
 	dissolveFile.encoding = "BINARY";
-	if (!dissolveFile.open('w')) {
-		return retVal.toString();
+	if (!dissolveFile.open('w')) { //si falla algo pero no se el que...
+		return retVal.toString(); //false
 	}
-	dissolveFile.write(unescape(in_contents));
+	dissolveFile.write(unescape(in_contents)); //creamos el archivo... //unescape --> decodes --> https://www.w3schools.com/jsref/jsref_unescape.asp
 	dissolveFile.close();
 	retVal = dissolveFile.exists;
 

@@ -10,7 +10,7 @@
 * accordance with the terms of the Adobe license agreement accompanying
 * it. If you have received this file from a source other than Adobe,
 * then your use, modification, or distribution of it requires the prior
-* written permission of Adobe. 
+* written permission of Adobe.
 **************************************************************************/
 
 (function () {
@@ -22,9 +22,9 @@
 //------------------------------------------------------------------------------
 // init - add event listeners
 //------------------------------------------------------------------------------
-	
+
 	function init() {
-		csInterface.addEventListener("com.adobe.event.applyDissolve", getPreviewInfoCallback);
+		csInterface.addEventListener("com.adobe.event.applyDissolve", getPreviewInfoCallback); //se añade un evento al principio que si es llamado desde el main de la UI como dispatchEvent("com.adobe.event.applyDissolve", JSON.stringify(gPreviewInfo)) se ejecutara
 	}
 
 //------------------------------------------------------------------------------
@@ -37,13 +37,13 @@
 		if (event) {
 			gPreviewInfo = event.data;
 			gHasSelection = (gPreviewInfo.selection.url.length > 0);
-			dispatchEvent("com.adobe.event.unloadDissolveExtension");
+			dispatchEvent("com.adobe.event.unloadDissolveExtension"); //cerramos el UI
 			createDissolveFile();
 		} else {
 			csInterface.closeExtension();
 		}
 	}
-	
+
 //------------------------------------------------------------------------------
 // doDissolvePixel - decides if a pixel should be colored or not
 //------------------------------------------------------------------------------
@@ -98,16 +98,20 @@
 			}
 			dataIdx = dataIdx + 4;
 		}
-		context.putImageData(imageData, 0, 0);
-		var decodedStr = window.atob(dissolveCanvas.toDataURL("image/png",1).replace(/^.+\,/g,""));
-		csInterface.evalScript("storeDissolveImage(\""+escape(decodedStr)+"\")", storeDissolveImageCallback);
+		context.putImageData(imageData, 0, 0); //ponemos solo el dissolve no la imagen
+		var decodedStr = window.atob(dissolveCanvas.toDataURL("image/png",1).replace(/^.+\,/g,"")); // window.atob decodifica : https://www.w3schools.com/jsref/met_win_atob.asp
+		//Explicacion sobre las URLs (URIs) y porque estan codificadas https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+		//replace(/g es modo global) --> https://www.w3schools.com/jsref/jsref_replace.asp
+		//vamos que decodedStr es una data URI que indica el formato de imagen y la compresion
+		csInterface.evalScript("storeDissolveImage(\""+escape(decodedStr)+"\")", storeDissolveImageCallback); //se llamara la funcion del .jsx que esta dentro la carpeta jsx y el resultado seran las variables de la otra funcion
+//escape() --> encode a string --> https://www.w3schools.com/jsref/jsref_escape.asp
 	}
 
 //------------------------------------------------------------------------------
 // storeDissolveImageCallback - gets results back from evalScript storeDissolveImage
 //------------------------------------------------------------------------------
 
-function storeDissolveImageCallback (in_msg) {
+function storeDissolveImageCallback (in_msg) { //in_msg obtendra verdadero o falso pero en string (que es lo que nos pasa stareDissolveImage). Supongo que entre eventos no se pueden pasar booleanos, solo strings...
 	if (in_msg  == "true") {
 		csInterface.evalScript("applyDissolve("+(gPreviewInfo.isMask == '1')+")",applyDissolveCallback);
 	} else {
@@ -130,14 +134,14 @@ function applyDissolveCallback (in_msg) {
 //------------------------------------------------------------------------------
 // dispatchEvent - dispatches a CEP event
 //------------------------------------------------------------------------------
-	
+
 	function dispatchEvent(in_eventStr,in_data) {
 		var msgEvent = new CSEvent(in_eventStr);
 		msgEvent.scope = "APPLICATION";
 		msgEvent.data = in_data;
 		msgEvent.appId = csInterface.getApplicationID();
 		msgEvent.extensionId = csInterface.getExtensionID();
-		csInterface.dispatchEvent(msgEvent);	
+		csInterface.dispatchEvent(msgEvent);
 	}
 
 init();
