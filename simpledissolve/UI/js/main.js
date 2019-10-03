@@ -46,7 +46,8 @@
 		getDefaultSettings();
 		csInterface.evalScript("readPreviewInfo()", drawPreviewCallback); //csInterface.evalScript('jsx_func_in_jsx_file(' + passing_param + ')', function(response) {  handing response  });
 		$('#iDissolvePc').focus(); //para hacer focus al editar el porcentaje nada mas entrar al panel //https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_event_focus_ref
-    
+    //PRUEBAS
+    //loadPreview();
 	}
 
 	//------------------------------------------------------------------------------
@@ -124,14 +125,20 @@
 		var previewContext = $('#cnvsPreview')[0].getContext("2d");
 		previewContext.clearRect(0, 0, $('#cnvsPreview').width(), $('#cnvsPreview').height());
 		previewContext.drawImage(gImagePreviewData, gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height);
+    //previewContext.drawImage(gImagePreviewData, 0, 0, $('#cnvsPreview').width(), $('#cnvsPreview').height());
+    //previewContext.putImageData(gImagePreviewData,0,0);
+
 		if (gHasSelection) {
 			var selectionData = gSelectionContext.getImageData(0, 0, gFittedSelectionRect.width, gFittedSelectionRect.height);
 			var previewData = previewContext.getImageData(gFittedSelectionRect.x, gFittedSelectionRect.y, gFittedSelectionRect.width, gFittedSelectionRect.height);
 			var x = gFittedSelectionRect.x;
 			var y = gFittedSelectionRect.y;
 		} else {
-			var previewData = previewContext.getImageData(gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height); // get image data te hace una copia de los limites que has seleccionado
-			var x = gFittedPreviewRect.x;
+      var previewData = previewContext.getImageData(gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height); // get image data te hace una copia de los limites que has seleccionado
+			//var previewData = previewContext.getImageData(0, 0, $('#cnvsPreview').width(), $('#cnvsPreview').height()); // get image data te hace una copia de los limites que has seleccionado
+      var x = gFittedPreviewRect.x;
+      //var x = 0;
+			//var y = 0;
 			var y = gFittedPreviewRect.y;
 		}
 		var disposition = $('input[name=radioDispo]:checked').val();
@@ -209,10 +216,12 @@
 			context.fillStyle = "#FFBBFF";
 			context.fillRect( 0, 0, cnvsWidth, cnvsHeight);
 
-			context.drawImage(gImagePreviewData, gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height); //context.drawImage(img,x,y,width,height);
+			//context.drawImage(gImagePreviewData, gFittedPreviewRect.x, gFittedPreviewRect.y, gFittedPreviewRect.width, gFittedPreviewRect.height); //context.drawImage(img,x,y,width,height);
+      context.drawImage(gImagePreviewData, 0, 0, $('#cnvsPreview').height(), $('#cnvsPreview').height()); //context.drawImage(img,x,y,width,height);
+
 			updatePreview();
 		};
-		gImagePreviewData.src = "img/redmallet.png"; //gPreviewInfo.url; //le ponemos el url de la imagen que queremos dibujar
+		gImagePreviewData.src = gPreviewInfo.url; //"img/redmallet.png"; // //le ponemos el url de la imagen que queremos dibujar
 	}
 
 	//------------------------------------------------------------------------------
@@ -294,6 +303,13 @@
 	// Triggers a preview update if the dissolve perecentage changes
 	//------------------------------------------------------------------------------
 
+  document.getElementById('btn_test').addEventListener('click', function () { //le añade al boton un eventlistener...
+    //con esta funcion a ejecutar
+    //csInterface.evalScript('sayHello()'); //  the csInterface.evalScript method is used to send to the Photoshop JSX engine the 'sayHello()' string for evaluation
+    //realmente va al manifest y pregunta por el JSX que hay y mira sus funciones
+    csInterface.evalScript('readPreviewInfo()');
+  });
+
 	$('#iDissolvePc').change(function () { //cada vez que cambia el valor se hace un update del preview
 		$(this).select(); //selecciona todo el texto del %
 		updatePreview();
@@ -323,6 +339,12 @@
 	$('.cancelBtn').click(function () {
 		csInterface.closeExtension();
 	});
+
+  document.getElementById('btn_test').addEventListener('click', function () {
+
+    csInterface.evalScript('sayHello()');
+
+  });
 
 	//------------------------------------------------------------------------------
 	// Triggers a preview update if the dissolve percentage changed

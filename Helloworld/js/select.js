@@ -1,6 +1,9 @@
 var gSelect = document.getElementById("layerSelect");
 var gSelect2 = document.getElementById("layerSelect2");
 
+var csInterface = new CSInterface();
+var gAvaliableArtLayers;
+
 // Hacer una lista de objetos con las imagenes de los layers que tenga los mismos indices que los nombres de estos layers que podremos en el select
 var gLayersArray = [];
 //console.log(gLayersArray.length);
@@ -36,8 +39,13 @@ console.log("\n\n");
 
 function init(){
 
+    //csInterface.evalScript("readAllLayers()", fillLayersArray);
     fullLayersArray();
 
+}
+
+function fillLayersArray(in_result){
+    gAvaliableArtLayers = in_result;
 }
 
 function fullLayersArray(){
@@ -51,6 +59,13 @@ function fullLayersArray(){
     addOption(gLayersArray[0].nombre);
     addOption(gLayersArray[1].nombre);
     addOption(gLayersArray[2].nombre);
+
+/*
+  for (var i = 0; i < gAvaliableArtLayers.length; i++) {
+      addOption(gAvaliableArtLayers[i].nombre);
+  }
+*/
+
 
 }
 
@@ -69,6 +84,7 @@ gSelect.addEventListener('change', function() {
     var index = gSelect.selectedIndex;
     console.log("Selected index: " + index);
     console.log("Name: " + gSelect[index].text);
+    //csInterface.alertThis("Selected index: " + index + "Name: " + gSelect[index].text);
     if(index>0){
 
         drawImage(gLayersArray[index-1].src);
@@ -84,6 +100,7 @@ gSelect2.addEventListener('change', function() {
     var index = gSelect2.selectedIndex;
     console.log("Selected index: " + index);
     console.log("Name: " + gSelect2[index].text);
+    //csInterface.alertThis("Selected index: " + index + "Name: " + gSelect[index].text);
     if(index>0){
 
         drawImageSubstracter(gLayersArray[index-1].src); //draw es de canvasmanager.js

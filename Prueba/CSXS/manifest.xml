@@ -7,14 +7,14 @@ ExtensionBundleVersion = version del bundle
 -->
 <ExtensionManifest
   Version="9.0"
-  ExtensionBundleId="com.example.helloworld"
+  ExtensionBundleId="com.adobe.Prueba"
   ExtensionBundleVersion="1.0.0"
-  ExtensionBundleName="Hello World"
+  ExtensionBundleName="Pueba"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <ExtensionList>
     <!-- Extension Id = id unica para la extension. Le anyadimos .panel1 o .panel para distinguirlo de extensionbundleid-->
-    <Extension Id="com.example.helloworld.panel" Version="1.0" />
+    <Extension Id="com.adobe.Prueba.Panel" Version="1.0" />
   </ExtensionList>
 
   <ExecutionEnvironment>
@@ -36,35 +36,39 @@ ExtensionBundleVersion = version del bundle
 
   <DispatchInfoList>
 
-    <Extension Id="com.example.helloworld.panel">
+    <Extension Id="com.adobe.Prueba.Panel">
       <DispatchInfo >
         <!-- Si tubieramos un bundle de varios paneles para varios programas (photoshop y premiere por ejemplo), tendiamos que especificar una host list -->
         <Resources>
           <MainPath>./index.html</MainPath> <!-- the HTML entry point of the Panel -->
-          <ScriptPath>./jsx/photoshop.jsx</ScriptPath> <!-- the JSX entry point of the Panel  --> <!-- este es el script que interacciona con photoshop  -->
+          <ScriptPath>./jsx/photoshopConnector.jsx</ScriptPath> <!-- the JSX entry point of the Panel  --> <!-- este es el script que interacciona con photoshop  -->
         </Resources>
 
         <Lifecycle>
           <AutoVisible>true</AutoVisible> <!-- Parece que el autovisible es para decirle que panel queremos mostrar (que archivo HTML?) -->
+          <StartOn>
+						<!-- <Event>com.adobe.event.loadSimpleDissolve</Event> -->
+
+					</StartOn>
         </Lifecycle>
 
         <UI>
 
           <Type>Panel</Type>
-          <Menu>Hello World!</Menu>
+          <Menu>Prueba</Menu>
 
           <Geometry> <!--  sets the default (required), max and min (optional) size of the panel  -->
             <Size>
-              <Height>600</Height>
-              <Width>800</Width>
+              <Height>300</Height>
+              <Width>450</Width>
             </Size>
             <MinSize>
               <Height>100</Height>
               <Width>150</Width>
             </MinSize>
             <MaxSize>
-              <Height>1000</Height>
-              <Width>1000</Width>
+              <Height>600</Height>
+              <Width>600</Width>
             </MaxSize>
           </Geometry>
 

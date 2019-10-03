@@ -30,6 +30,7 @@ function init() {
 
   gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
   gCanvasContext2.fillRect(0, 0, $('#cnvsPreview2').width(), ($('#cnvsPreview2').height())); //relleno todo el canvas de amarillo
+  //drawImage("~/AppData/Local/Temp/nombreTemporal.png");
 }
 
 function drawSubstract(){ //PUEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

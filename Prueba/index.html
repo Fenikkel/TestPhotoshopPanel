@@ -3,25 +3,17 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/styles.css"/>
-  <title>Hello World!</title>
+  <title>Prueba</title>
 </head>
 <body>
   <div id="content">
     <button id="btn_test">Say Hello</button> <!-- boton -->
   </div>
-
   <p>Preview:</p>
   <div class="divPreview">
     <div id="divCnvs">
       <canvas id="cnvsPreview" width="550" height="300" />
     </div>
-    <div id="divCnvs2">
-      <canvas id="cnvsPreview2" width="550" height="300" />
-    </div>
-    <div id="divCnvs3">
-      <canvas id="cnvsFinal" width="550" height="300" />
-    </div>
-  </div>
   <!--surround the select box with a "custom-select" DIV element. Remember to set the width:-->
 <!-- https://www.w3schools.com/tags/tag_select.asp -->
   <div class="divSelect">
@@ -47,8 +39,7 @@
   <script src="js/libs/CSInterface.js"></script>  <!-- mediador entre photoshop y los paneles -->
   <script src="js/libs/jquery-2.0.2.min.js"></script> <!-- nos da comandos extra de acceso como $, etc -->
   <script src="js/substract.js"></script>
-  <script src="js/canvasManager.js"></script> <!-- primer que select perque select necessita les seues funcions -->
+  <script src="js/canvasManager.js"></script>
   <script src="js/select.js"></script>
-  <!--<script src="js/customSelect.js"></script> -->
   <script src="js/main.js"></script> <!-- hace una instancia de CSInterface y luego le mete al boton un eventlistener para que ejecute una funcion de photoshop.jsx -->
 </body>

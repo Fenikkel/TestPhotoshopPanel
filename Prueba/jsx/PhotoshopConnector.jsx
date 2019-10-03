@@ -1,61 +1,46 @@
-﻿/*************************************************************************
-* ADOBE CONFIDENTIAL
-* ___________________
-*
-* Copyright 2014 Adobe Inc.
-* All Rights Reserved.
-*
-* NOTICE: Adobe permits you to use, modify, and distribute this file in
-* accordance with the terms of the Adobe license agreement accompanying
-* it. If you have received this file from a source other than Adobe,
-* then your use, modification, or distribution of it requires the prior
-* written permission of Adobe.
-**************************************************************************/
-//------------------------------------------------------------------------------
-// readPreviewInfo
-// previewInfo contains an object with the
-//		height
-//		width
-// 		url of the preview
-//		selection (if any).
-//------------------------------------------------------------------------------
+//var allLayers = app.activeDocument.layerSets.add();
+//alert(allLayers.name);
 
+/*for (var i = 0; i < app.documents.length; i++) { //imprime todos los proyectos activos
+ alert(app.documents[i]);
+}*/
 
+/*
+for (var i = 0; i < app.activeDocument.layers.length; i++) { //pilla todas las capas y grupos que hay pero no las capas y los grupos que hay dentro de grupos)
+ alert(app.activeDocument.layers[i]);
+}*/
 
-
-
+/*for (var i = 0; i < app.activeDocument.artLayers.length; i++) { //pilla todas las capas que hay (menos los grupos[layerSets] y las capas dentro de los grupos)
+ alert(app.activeDocument.artLayers[i].kind);
+}*/
 
 
 /*
-// BEGIN__HARVEST_EXCEPTION_ZSTRING
-<javascriptresource>
-<name>Simple Dissolve Extension...</name>
-<menu>filter</menu>
-<eventid>6F17BFA7-EFC8-11EA-B850-7B95ED8EA713</eventid>
-<enableinfo> in (PSHOP_ImageMode, RGBMode, CMYKMode, HSLMode, HSBMode, LabMode, RGB48Mode)  &amp;&amp; (PSHOP_IsTargetVisible  &amp;&amp;  ! PSHOP_IsTargetSection)</enableinfo>
-<category>filter</category>
-</javascriptresource>
-// END__HARVEST_EXCEPTION_ZSTRING
+
+for (var i = 0; i < app.activeDocument.layerSets.length; i++) { //pilla todas los layerSets(carpetas que hay pero no las que estan dentro de estas)
+ alert(app.activeDocument.layerSets[i].name);
+}
 */
-
-
 
 #target photoshop
 
-/*********************************/
 
-var gExitLoop = false
+function makePreviewBase(prevName, indx){
+	try {
+		var xLib = new ExternalObject("lib:\PlugPlugExternalObject");
+		//alert(prevName);
+		//alert(indx);
 
-try {
-	var xLib = new ExternalObject("lib:\PlugPlugExternalObject");
-	displayExtensionDlg()
-} catch(e) {
-	alert(e.line + " - " + e);
+
+		//generatePreview(prevName); // DESCOMENTAR
+	} catch(e) {
+		alert(e.line + " - " + e);
+	}
 }
 
-/*********************************/
+function generatePreview(prevName){
+	//alert(prevName);
 
-function displayExtensionDlg() {
 	if (app.documents.length == 0) { //Si no hi ha res obert...
 		return;
 	}
@@ -67,29 +52,20 @@ function displayExtensionDlg() {
 		alert("Too many layers selected.");
 		return;
 	}
-	var activeLayer = activeDocument.activeLayer
-	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected()) //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
+	var activeLayer = activeDocument.activeLayer;// //activeDocument.artLayers[] //si desordenas los art layers ya no tienen el mismo indice
+	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected(), prevName) //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
 	if (previewInfoObj.url == "") {
 		return;
 	}
 	// save preview info in special place where UI can read it later
-	$.setenv('com.adobe.SimpleDissolve.preview',previewInfoObj.toSource());
+	$.setenv('com.adobe.SimpleDissolve.preview'+prevName, previewInfoObj.toSource()); //MODIFICADO
 	activeDocument.activeLayer = activeLayer;
-	//loadDialog(); //DESCOMENTAR
+
 }
 
-/*********************************/
 
-function loadDialog() { //como que hace un evento...
-		var eventObj = new CSXSEvent();
-		eventObj.type = "com.adobe.event.loadSimpleDissolve";
-		eventObj.message = ""
-		eventObj.dispatch()
-}
-
-/*********************************/
-
-function createPreviews(in_doc,in_isLayerMaskSelected) {
+function createPreviews(in_doc,in_isLayerMaskSelected, prevName) {
+		//alert(prevName);
 
 		blockRefresh(); // fa coses rares
 		var hasSelection = false;
@@ -135,7 +111,7 @@ function createPreviews(in_doc,in_isLayerMaskSelected) {
 						selectionDoc.artLayers[0].isBackgroundLayer = false;
 				}
 				paste() //hace pegado (a la capa activa del cdocumento activo supongo)
-				var selectionFile = File(Folder.temp+"/selection.png"); //hacemos el path de temp para la seleccion
+				var selectionFile = File(Folder.temp+"/"+prevName+".png"); //hacemos el path de temp para la seleccion
 				saveToPNG(selectionDoc, selectionFile); //guardamos la seleccion en formato PNG a temp
 				if (selectionFile.exists) { //si se ha creado el archivo (si existe seleccion)
 					retVal.selection.url = getURL(selectionFile); //guardamos el url de la seleccion
@@ -154,7 +130,7 @@ function createPreviews(in_doc,in_isLayerMaskSelected) {
 			catch(e) {
 				if(!app.updateProgress(7,totalSteps)){return false;}
 			}
-			var previewFile = File(Folder.temp+"/preview.png");
+			var previewFile = File(Folder.temp+"/"+prevName+".png");
 			if (in_isLayerMaskSelected) { //si tiene layer mask
 				saveLayerMaskToPNG(in_doc,previewFile)
 				if (hasSelection) { //si tiene seleccion
@@ -178,8 +154,6 @@ function createPreviews(in_doc,in_isLayerMaskSelected) {
 	return retVal
 }
 
-/*********************************/
-
 function getURL(in_file) {
 	if ($.os.match(/^mac/gi) != null) {
 		var retVal = "file://" + in_file.absoluteURI;
@@ -188,8 +162,6 @@ function getURL(in_file) {
 	}
 	return retVal
 }
-
-/*********************************/
 
 function paste() {
 	var idpast = charIDToTypeID( "past" );
@@ -404,20 +376,114 @@ function blockRefresh(){
 	executeAction( idsetd, desc, DialogModes.NO );
 }
 
+function generateTemp(){
+	var initialPrefs = app.preferences.rulerUnits;
+	app.preferences.rulerUnits = Units.PIXELS;
+	//var dir = app.activeDocument.path;
+	//var dir ="~/Documents";
+	//var dir ="~/Temp"; //Nope
+	//var dir ="~/tmp"; //Nope
+	var dir ="~/AppData/Local/Temp";
+	//alert(dir);
+
+	//Make a copy
+
+
+	app.activeDocument.artLayers[0].copy(false);
+	//alert(app.activeDocument.mode);
+	//var docCopy = app.documents.add(app.activeDocument.width, app.activeDocument.height, app.activeDocument.resolution , "DocumentTemporal");//, app.activeDocument.mode, DocumentFill.TRANSPARENT, app.activeDocument.pixelAspectRatio, app.activeDocument.bitsPerChannel, app.activeDocument.colorProfileName);
+	var docCopy = app.activeDocument.duplicate();
+	var tope = app.activeDocument.layers.length;
+	for (var i = 0; i < tope; i++) {
+		if(i == tope-1){
+			app.activeDocument.activeLayer.clear();
+
+		}
+		else{
+			app.activeDocument.activeLayer.remove();
+
+		}
+	}
+	//app.activeDocument.layers.removeAll();
+	app.activeDocument.paste(false);
+
+	//app.activeDocument.artLayers[0].desaturate();
+
+	var origwidth = docCopy.width.value;
+	var origHeight = docCopy.height.value;
+
+//hacemos las opciones de guardado
+	var sfw  = new ExportOptionsSaveForWeb();
+	sfw.format = SaveDocumentType.PNG;
+	sfw.PNG8 = false; //use PNG-24
+	sfw.transparency = true;
+
+	var destFolder = dir;
+	//var destFolder = Folder(dir).selectDlg("Selecto folder");
+
+	var iconName = "nombreTemporal.png";
+
+	try{
+		docCopy.exportDocument(new File(destFolder + "/" + iconName), ExportType.SAVEFORWEB, sfw);
+	}
+	catch(exception){
+		alert("ERROR: " + exception);
+	}
+	finally{ //esto se hace hay error o no
+		app.preferences.rulerUnits = initialPrefs;
+
+		if(docCopy != null){
+				docCopy.close(SaveOptions.DONOTSAVECHANGES);
+		}
+	}
+
+}
+
+
+
+function sayHello(){ // esta funcion sera llamada desde CSInterface que hara de mediador entre el boton del panel (tu) y las caracteristicas de CEP (photoshop)
+  alert("Hello from ExtendScript");
+}
+
+function alertThis( var_string ){ // esta funcion sera llamada desde CSInterface que hara de mediador entre el boton del panel (tu) y las caracteristicas de CEP (photoshop)
+  alert(var_string);
+}
 
 function readPreviewInfo ()
 {
 	var retVal = $.getenv('com.adobe.SimpleDissolve.preview'); //te da un string con toda la info...? no el objeto clase
 	alert(retVal);
-
 	return retVal;
 }
 
-function sayHello ()
+
+function readAllLayers ()
 {
-	//alert("retVal");
+	var retVal = [];
+  //var docReference = app.activeDocument;
+	var contador = 1;
 
+	retVal[0] = contador;
 
+	//SI HI HA TEXT SE BUGGEJA!!! (tot lo que estiga baix de ell sen va a la merda) //https://www.adobe.com/content/dam/acom/en/devnet/photoshop/pdfs/photoshop-cc-javascript-ref-2019.pdf
+  for (var i = 0; i < app.activeDocument.artLayers.length; i++) { //pilla todas las capas que hay (menos los grupos[layerSets] y las capas dentro de los grupos)
+   //alert(app.activeDocument.artLayers[i].name);
+    if(app.activeDocument.artLayers[i].kind == LayerKind.NORMAL){
+			//alert(app.activeDocument.artLayers[i].name);
 
-	return;
+			indice= i;
+			contador++;
+
+      var layer = {
+        name: app.activeDocument.artLayers[i].name,
+        index: i
+      };
+			retVal[i+1] = layer;
+
+    }
+  }
+
+	retVal[0] = contador; //asi tendremos el length del array de objetos
+
+	return retVal.toSource();
 }
