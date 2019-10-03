@@ -7,14 +7,14 @@ ExtensionBundleVersion = version del bundle
 -->
 <ExtensionManifest
   Version="9.0"
-  ExtensionBundleId="com.adobe.Prueba"
+  ExtensionBundleId="com.fenikkel.Substracter"
   ExtensionBundleVersion="1.0.0"
-  ExtensionBundleName="Pueba"
+  ExtensionBundleName="Substracter"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <ExtensionList>
     <!-- Extension Id = id unica para la extension. Le anyadimos .panel1 o .panel para distinguirlo de extensionbundleid-->
-    <Extension Id="com.adobe.Prueba.Panel" Version="1.0" />
+    <Extension Id="com.fenikkel.Substracter.Panel" Version="1.0" />
   </ExtensionList>
 
   <ExecutionEnvironment>
@@ -36,7 +36,7 @@ ExtensionBundleVersion = version del bundle
 
   <DispatchInfoList>
 
-    <Extension Id="com.adobe.Prueba.Panel">
+    <Extension Id="com.fenikkel.Substracter.Panel">
       <DispatchInfo >
         <!-- Si tubieramos un bundle de varios paneles para varios programas (photoshop y premiere por ejemplo), tendiamos que especificar una host list -->
         <Resources>
@@ -55,7 +55,7 @@ ExtensionBundleVersion = version del bundle
         <UI>
 
           <Type>Panel</Type>
-          <Menu>Prueba</Menu>
+          <Menu>Substracter</Menu>
 
           <Geometry> <!--  sets the default (required), max and min (optional) size of the panel  -->
             <Size>
