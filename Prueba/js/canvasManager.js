@@ -80,7 +80,7 @@ function drawImage(imagePath) { //seria mejor otra variable con el nombre del ca
     gCanvasContext.fillStyle = "#00FABA";
     gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
 
-    gImageData = new Image(); //fatal
+    gImageData = new Image(); 
 
     gImageData.onload = function () { //Se hace esta funcion cuando se carga la imagen/objeto (util porque sino muchos atributos no estan actualizados)  // https://www.w3schools.com/jsref/event_onload.asp
 
