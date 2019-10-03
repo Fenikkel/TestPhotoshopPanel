@@ -4,7 +4,7 @@ var gSubstractButton = document.getElementById("btn_substract");
  var gImageData = new Image();
 
  var gBasePreviewInfo = {};
-
+var gBasePrevName = "";
 
  var gWidthAspectRatio = 1; //aspect ratio
  var gFittedRectangle = { //rectangulo que respeta el aspect ratio de la imagen pero que no supera en ancho el canvas
@@ -30,6 +30,11 @@ function init() {
 */
   //paintCanvas();
 
+}
+
+function setBasePrevName(str){
+    gBasePrevName = str;
+  return ;
 }
 
 function drawBasePreview(in_resultStr) {
@@ -60,7 +65,8 @@ function paintBaseCanvas(){
   gImageData.src = "";
   //gImageData = new Image(); //fatal
   //gCanvasContext.clearRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
-  csInterface.evalScript("readPreviewInfo()", drawBasePreview);
+
+  csInterface.evalScript("readPreviewInfo(\"" +  gBasePrevName + "\")", drawBasePreview);
 
 
 }
@@ -73,6 +79,22 @@ function drawImage(imagePath) { //seria mejor otra variable con el nombre del ca
     gCanvasContext.clearRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
     gCanvasContext.fillStyle = "#00FABA";
     gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
+
+    gImageData = new Image(); //fatal
+
+    gImageData.onload = function () { //Se hace esta funcion cuando se carga la imagen/objeto (util porque sino muchos atributos no estan actualizados)  // https://www.w3schools.com/jsref/event_onload.asp
+
+        calculateFittedRectangle(gImageData, '#cnvsPreview');
+
+        gCanvasContext.fillStyle = "#FABA00";
+        gCanvasContext.fillRect(gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height);
+        gCanvasContext.drawImage(gImageData, gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height); //context.drawImage(img,x,y,width,height);
+        //gCanvasContext.drawImage(gImageData, 0, 0, gFittedRectangle.width, gFittedRectangle.height);
+
+        var previewData = gCanvasContext.getImageData(gFittedSelectionRect.x, gFittedSelectionRect.y, gFittedSelectionRect.width, gFittedSelectionRect.height);
+        gCanvasContext.putImageData(previewData, 0, 0);
+
+    };
 
     gImageData.src = imagePath; //con esto se activara el onLoad
 }
@@ -141,19 +163,7 @@ function prueba(){
 
 }
 
-gImageData.onload = function () { //Se hace esta funcion cuando se carga la imagen/objeto (util porque sino muchos atributos no estan actualizados)  // https://www.w3schools.com/jsref/event_onload.asp
 
-    calculateFittedRectangle(gImageData, '#cnvsPreview');
-
-    gCanvasContext.fillStyle = "#FABA00";
-    gCanvasContext.fillRect(gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height);
-    gCanvasContext.drawImage(gImageData, gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height); //context.drawImage(img,x,y,width,height);
-    //gCanvasContext.drawImage(gImageData, 0, 0, gFittedRectangle.width, gFittedRectangle.height);
-
-    var previewData = gCanvasContext.getImageData(gFittedSelectionRect.x, gFittedSelectionRect.y, gFittedSelectionRect.width, gFittedSelectionRect.height);
-    gCanvasContext.putImageData(previewData, 0, 0);
-
-};
 
 
 gSubstractButton.addEventListener('click', function() {

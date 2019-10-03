@@ -468,11 +468,12 @@ function alertThis( var_string ){ // esta funcion sera llamada desde CSInterface
   alert(var_string);
 }
 
-function readPreviewInfo ()
+function readPreviewInfo (prevStr)
 {
 	//var retVal = $.getenv('com.fenikkel.Substract.previewBase'); //te da un string con toda la info...? no el objeto clase
+	var retVal = $.getenv('com.adobe.SimpleDissolve.' + prevStr); //te da un string con toda la info...? no el objeto clase
 
-	var retVal = $.getenv('com.adobe.SimpleDissolve.previewBase'); //te da un string con toda la info...? no el objeto clase
+//	var retVal = $.getenv('com.adobe.SimpleDissolve.previewBase'); //te da un string con toda la info...? no el objeto clase
 	//alert(retVal);
 	return retVal;
 }

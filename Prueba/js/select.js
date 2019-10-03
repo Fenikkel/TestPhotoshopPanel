@@ -6,6 +6,8 @@ var gAvaliableArtLayers;
 
 // Hacer una lista de objetos con las imagenes de los layers que tenga los mismos indices que los nombres de estos layers que podremos en el select
 var gLayersArray = [];
+
+
 //console.log(gLayersArray.length);
 
 // When a new <option> is selected //https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedIndex
@@ -43,6 +45,7 @@ function fillLayersArray(in_result){
 }
 
 
+
 function addOption(optionName){
 
     var option = document.createElement("option");
@@ -71,9 +74,11 @@ gSelect.addEventListener('change', function() {
     //alert("NameSel: " + gSelect[index].text);
     //alert("NameLayer: " + gAvaliableArtLayers[index].name);
 
+    setBasePrevName(gAvaliableArtLayers[index].name);
 
+    var str = "makePreviewBase( \"" +  gAvaliableArtLayers[index].name + "\""   + "\,"   +    "\""  + gAvaliableArtLayers[index].index  +"\")"; //LA COSA ES QUE TIENES QUe pasar una sola string a evalScript, que esta contenga la funcion con sus variables (que han de ser strings tambien sin ser variables (osea que tenga sus comillas) y ademas has de separarlo por una coma)
 
-    var str = "makePreviewBase( \"" + "previewBase" + "\""   + "\,"   +    "\""  + gAvaliableArtLayers[index].index  +"\")"; //LA COSA ES QUE TIENES QUe pasar una sola string a evalScript, que esta contenga la funcion con sus variables (que han de ser strings tambien sin ser variables (osea que tenga sus comillas) y ademas has de separarlo por una coma)
+    //var str = "makePreviewBase( \"" + "previewBase" + "\""   + "\,"   +    "\""  + gAvaliableArtLayers[index].index  +"\")"; //LA COSA ES QUE TIENES QUe pasar una sola string a evalScript, que esta contenga la funcion con sus variables (que han de ser strings tambien sin ser variables (osea que tenga sus comillas) y ademas has de separarlo por una coma)
     csInterface.evalScript(str, paintBaseCanvas);
     //paintCanvas();
 
