@@ -1,10 +1,16 @@
 var gSubstractButton = document.getElementById("btn_substract");
 
  var gCanvasContext = $('#cnvsPreview')[0].getContext("2d");
- var gImageData = new Image();
+ var gCanvasContext2 = $('#cnvsPreview2')[0].getContext("2d");
 
- var gBasePreviewInfo = {};
+ var gImageData = new Image();
+  var gImageSubstracterData = new Image();
+
+var gBasePreviewInfo = {};
+var gSubstracterPreviewInfo = {};
 var gBasePrevName = "";
+var gSubstracterPrevName = "";
+
 
  var gWidthAspectRatio = 1; //aspect ratio
  var gFittedRectangle = { //rectangulo que respeta el aspect ratio de la imagen pero que no supera en ancho el canvas
@@ -14,73 +20,57 @@ var gBasePrevName = "";
    height: 0
  };
 
+/**************************************************************************************************************************************************/
 
 function init() {
-  /*
-
-  gCanvasContext.fillStyle = "#FFFF00";
-
-
-  gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
-
-  //drawImage("~/AppData/Local/Temp/nombreTemporal.png");
-  drawImage("C:/Users/dactic/AppData/Local/Temp/nombreTemporal.png");
-  //updatePreview();
-  prueba(); //PROBAR PER UNA ULTIMA VEGADA
-*/
   //paintCanvas();
-
 }
 
-function setBasePrevName(str){
-    gBasePrevName = str;
-  return ;
-}
-
-function drawBasePreview(in_resultStr) {
-
-  //alert(in_resultStr);
-
-  if (in_resultStr !== 'false') { //si hay previewInfo
-    gBasePreviewInfo = {};
-    eval("gBasePreviewInfo = " + in_resultStr) //https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/eval
-    //gHasSelection = (gPreviewInfo.selection.url.length > 0);
-    //loadPreview();
-    /*if (gHasSelection) {
-      loadSelection();
-    }*/
-    drawImage(gBasePreviewInfo.url); //FALLA A PARTIR D'ACI!!!
-  }
-  //document.onkeydown = onKeyDownCallbak;
-}
-
-function paintCanvas(){
-  gCanvasContext.fillStyle = "#FFBB00";
-
-
-  gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
-}
+/*******************************************************************PAINT*******************************************************************/
 
 function paintBaseCanvas(){
   gImageData.src = "";
-  //gImageData = new Image(); //fatal
-  //gCanvasContext.clearRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
 
   csInterface.evalScript("readPreviewInfo(\"" +  gBasePrevName + "\")", drawBasePreview);
-
-
 }
 
-function drawImage(imagePath) { //seria mejor otra variable con el nombre del canvas que queremos editar
+function paintSubstracterCanvas(){
+  gImageSubstracterData.src = "";
 
-    //alert(imagePath);
+  csInterface.evalScript("readPreviewInfo(\"" +  gSubstracterPrevName + "\")", drawSubstracterPreview);
+}
 
-    //gImageData.src = "";
+/**************************************************************************************************************************************************/
+
+function drawBasePreview(in_resultStr) {
+
+  if (in_resultStr !== 'false') { //si hay previewInfo
+    gBasePreviewInfo = {};
+    eval("gBasePreviewInfo = " + in_resultStr); //https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/eval
+    drawImage(gBasePreviewInfo.url);
+  }
+}
+
+
+function drawSubstracterPreview(in_resultStr) {
+
+  if (in_resultStr !== 'false') { //si hay previewInfo
+    gSubstracterPreviewInfo = {};
+    eval("gSubstracterPreviewInfo = " + in_resultStr);
+    drawSubstracterImage(gSubstracterPreviewInfo.url);
+  }
+}
+
+/**************************************************************************************************************************************************/
+
+
+function drawImage(imagePath) {
+
     gCanvasContext.clearRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
     gCanvasContext.fillStyle = "#00FABA";
     gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
 
-    gImageData = new Image(); 
+    gImageData = new Image();
 
     gImageData.onload = function () { //Se hace esta funcion cuando se carga la imagen/objeto (util porque sino muchos atributos no estan actualizados)  // https://www.w3schools.com/jsref/event_onload.asp
 
@@ -89,7 +79,6 @@ function drawImage(imagePath) { //seria mejor otra variable con el nombre del ca
         gCanvasContext.fillStyle = "#FABA00";
         gCanvasContext.fillRect(gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height);
         gCanvasContext.drawImage(gImageData, gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height); //context.drawImage(img,x,y,width,height);
-        //gCanvasContext.drawImage(gImageData, 0, 0, gFittedRectangle.width, gFittedRectangle.height);
 
         var previewData = gCanvasContext.getImageData(gFittedSelectionRect.x, gFittedSelectionRect.y, gFittedSelectionRect.width, gFittedSelectionRect.height);
         gCanvasContext.putImageData(previewData, 0, 0);
@@ -99,7 +88,61 @@ function drawImage(imagePath) { //seria mejor otra variable con el nombre del ca
     gImageData.src = imagePath; //con esto se activara el onLoad
 }
 
+function drawSubstracterImage(imagePath) {
 
+    gCanvasContext2.clearRect(0, 0, $('#cnvsPreview2').width(), ($('#cnvsPreview2').height()));
+    gCanvasContext2.fillStyle = "#00FABA";
+    gCanvasContext2.fillRect(0, 0, $('#cnvsPreview2').width(), ($('#cnvsPreview2').height()));
+    
+    gImageSubstracterData = new Image();
+
+    gImageSubstracterData.onload = function () {
+
+        calculateFittedRectangle(gImageSubstracterData, '#cnvsPreview2');
+
+        gCanvasContext2.fillStyle = "#FABA00";
+        gCanvasContext2.fillRect(gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height);
+        gCanvasContext2.drawImage(gImageSubstracterData, gFittedRectangle.x, gFittedRectangle.y, gFittedRectangle.width, gFittedRectangle.height);
+
+        var previewData = gCanvasContext2.getImageData(gFittedSelectionRect.x, gFittedSelectionRect.y, gFittedSelectionRect.width, gFittedSelectionRect.height);
+        gCanvasContext2.putImageData(previewData, 0, 0);
+
+    };
+
+    gImageSubstracterData.src = imagePath; //con esto se activara el onLoad
+}
+
+/**************************************************************************************************************************************************/
+
+
+function paintBaseCanvas(){
+  gImageData.src = "";
+
+  csInterface.evalScript("readPreviewInfo(\"" +  gBasePrevName + "\")", drawBasePreview);
+
+
+}
+
+function paintSubstracterCanvas(){
+  gImageSubstracterData.src = "";
+
+  csInterface.evalScript("readPreviewInfo(\"" +  gSubstracterPrevName + "\")", drawSubstracterPreview);
+}
+
+/**************************************************************************************************************************************************/
+
+
+function setBasePrevName(str){
+    gBasePrevName = str;
+  return ;
+}
+
+function setSubstracterPrevName(str){
+    gSubstracterPrevName = str;
+  return ;
+}
+
+/**************************************************************************************************************************************************/
 
 function calculateFittedRectangle(imageData, canvasPreviewID){
 
@@ -142,33 +185,13 @@ function rescaleForFit(in_rect, in_img) {
   return retVal;
 }
 
-function prueba(){
-  var previewData = gCanvasContext.getImageData(gFittedSelectionRect.x, gFittedSelectionRect.y, gFittedSelectionRect.width, gFittedSelectionRect.height);
-  var x = gFittedSelectionRect.x;
-  var y = gFittedSelectionRect.y;
+/**************************************************************************************************************************************************/
 
-  var dataIdx = 0;
-  while (dataIdx < previewData.data.length) {
-    previewData.data[dataIdx] = 255; //Red
-    previewData.data[dataIdx + 1] = 255; //Green
-    previewData.data[dataIdx + 2] = 255; //Blue
-    previewData.data[dataIdx + 3] = 255; //el canal alpha (transparencias) = totalmente opaco
-
-    dataIdx = dataIdx + 4; //pintamos de 4 pixeles en 4
-
-  }
-
-  gCanvasContext.putImageData(previewData, x, y); //ponemos al preview lo que hemos hecho
+function paintCanvas(){
+  gCanvasContext2.fillStyle = "#FFBB00";
 
 
+  gCanvasContext2.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
 }
-
-
-
-
-gSubstractButton.addEventListener('click', function() {
-
-
-})
 
 init();

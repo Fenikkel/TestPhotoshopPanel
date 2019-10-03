@@ -25,7 +25,7 @@ function drawSubstract(){
 
   var dataIdx = 0;
 
-  alert(baseData.data.length);
+  //alert(baseData.data.length);
 
   while (dataIdx < baseData.data.length) { //CUIDADO CON OUT OF RANGE (los canvas han de ser del mismo tamaño)
 
@@ -58,13 +58,13 @@ function drawSubstract(){
 
 function doDissolvePixel() {
   var rand = Math.floor((Math.random() * 100) + 1); //valor del 1 al 101?
-  return (rand <= parseFloat(50)); //si el valor random es menor que el porcentaje del panel devolvemos true
+  return (rand <= parseFloat(4)); //si el valor random es menor que el porcentaje del panel devolvemos true
 }
 
 
 gSubstractButton.addEventListener('click', function() {
 
-    alert("drawsubstract");
+    //alert("drawsubstract");
     drawSubstract();
 
 })

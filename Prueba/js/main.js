@@ -9,6 +9,7 @@
 
    //csInterface.evalScript('readPreviewInfo()');
    //csInterface.evalScript('generateTemp()');
+   paintCanvas();
 
 
  });

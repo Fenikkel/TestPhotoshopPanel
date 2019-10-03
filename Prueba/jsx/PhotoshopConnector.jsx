@@ -42,6 +42,22 @@ function makePreviewBase(prevName, indx){
 	}
 }
 
+function makePreviewSubstracter(prevName, indx){
+	try {
+		var xLib = new ExternalObject("lib:\PlugPlugExternalObject");
+		//alert(prevName);
+		//alert(indx);
+
+		//generatePreview(prevName, indx); // DESCOMENTAR
+
+
+	} catch(e) {
+		alert(e.line + " - " + e);
+	}
+}
+
+
+
 function generatePreview(prevName, indx){
 	//alert(prevName);
 
