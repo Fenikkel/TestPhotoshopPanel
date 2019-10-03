@@ -59,8 +59,8 @@ ExtensionBundleVersion = version del bundle
 
           <Geometry> <!--  sets the default (required), max and min (optional) size of the panel  -->
             <Size>
-              <Height>300</Height>
-              <Width>450</Width>
+              <Height>600</Height>
+              <Width>500</Width>
             </Size>
             <MinSize>
               <Height>100</Height>

@@ -2,6 +2,7 @@ var gSubstractButton = document.getElementById("btn_substract");
 
  var gCanvasContext = $('#cnvsPreview')[0].getContext("2d");
  var gCanvasContext2 = $('#cnvsPreview2')[0].getContext("2d");
+ var gCanvasContextFinal = $('#cnvsFinal')[0].getContext("2d");
 
  var gImageData = new Image();
   var gImageSubstracterData = new Image();
@@ -93,7 +94,7 @@ function drawSubstracterImage(imagePath) {
     gCanvasContext2.clearRect(0, 0, $('#cnvsPreview2').width(), ($('#cnvsPreview2').height()));
     gCanvasContext2.fillStyle = "#00FABA";
     gCanvasContext2.fillRect(0, 0, $('#cnvsPreview2').width(), ($('#cnvsPreview2').height()));
-    
+
     gImageSubstracterData = new Image();
 
     gImageSubstracterData.onload = function () {
@@ -188,10 +189,10 @@ function rescaleForFit(in_rect, in_img) {
 /**************************************************************************************************************************************************/
 
 function paintCanvas(){
-  gCanvasContext2.fillStyle = "#FFBB00";
+  gCanvasContextFinal.fillStyle = "#FFBB00";
 
 
-  gCanvasContext2.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
+  gCanvasContextFinal.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
 }
 
 init();

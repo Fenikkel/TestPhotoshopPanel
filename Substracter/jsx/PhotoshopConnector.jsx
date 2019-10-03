@@ -28,14 +28,8 @@ for (var i = 0; i < app.activeDocument.layerSets.length; i++) { //pilla todas lo
 function makePreviewBase(prevName, indx){
 	try {
 		var xLib = new ExternalObject("lib:\PlugPlugExternalObject");
-		//alert(prevName);
-		//alert(indx);
 
-
-		generatePreview(prevName, indx); // DESCOMENTAR
-
-
-		//paintBaseCanvas();
+		generatePreview(prevName, indx);
 
 	} catch(e) {
 		alert(e.line + " - " + e);
@@ -93,7 +87,7 @@ function generatePreview(prevName, indx){
 	}
 	// save preview info in special place where UI can read it later
 	//var envstr = 'com.adobe.SimpleDissolve.'+prevName
-	$.setenv('com.adobe.SimpleDissolve.' + prevName, previewInfoObj.toSource()); //MODIFICADO
+	$.setenv('com.fenikkel.Substracter.' + prevName, previewInfoObj.toSource()); //MODIFICADO
 	activeDocument.activeLayer = activeLayer; //volvemos a poner el active layer que teniamos
 
 }
@@ -487,7 +481,7 @@ function alertThis( var_string ){ // esta funcion sera llamada desde CSInterface
 function readPreviewInfo (prevStr)
 {
 	//var retVal = $.getenv('com.fenikkel.Substract.previewBase'); //te da un string con toda la info...? no el objeto clase
-	var retVal = $.getenv('com.adobe.SimpleDissolve.' + prevStr); //te da un string con toda la info...? no el objeto clase
+	var retVal = $.getenv('com.fenikkel.Substracter.' + prevStr); //te da un string con toda la info...? no el objeto clase
 
 //	var retVal = $.getenv('com.adobe.SimpleDissolve.previewBase'); //te da un string con toda la info...? no el objeto clase
 	//alert(retVal);
