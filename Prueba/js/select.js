@@ -61,18 +61,21 @@ gSelect.addEventListener('change', function() {
     if(index - 1 < 0){
       return;
     }
-    alert("Selected index: " + index + "\n" +
+    /*alert("Selected index: " + index + "\n" +
     "NameSel: " + gSelect[index].text + "\n" +
     "NameLayer: " + gAvaliableArtLayers[index].name + "\n" +
     "indxLayer: " + gAvaliableArtLayers[index].index);
+    */
 
 
     //alert("NameSel: " + gSelect[index].text);
     //alert("NameLayer: " + gAvaliableArtLayers[index].name);
 
 
-    var str = "makePreviewBase( \"" + "prevB" + "\""   + "\,"   +    "\""  + index  +"\")"; //LA COSA ES QUE TIENES QUe pasar una sola string a evalScript, que esta contenga la funcion con sus variables (que han de ser strings tambien sin ser variables (osea que tenga sus comillas) y ademas has de separarlo por una coma)
-    csInterface.evalScript(str);
+
+    var str = "makePreviewBase( \"" + "previewBase" + "\""   + "\,"   +    "\""  + gAvaliableArtLayers[index].index  +"\")"; //LA COSA ES QUE TIENES QUe pasar una sola string a evalScript, que esta contenga la funcion con sus variables (que han de ser strings tambien sin ser variables (osea que tenga sus comillas) y ademas has de separarlo por una coma)
+    csInterface.evalScript(str, paintBaseCanvas);
+    //paintCanvas();
 
     //cuando se seleciona una opcion vamos al nuestra lista de layers con el index-1 y pintamos ese layer al canvas. Luego desaturamos la imagen
 

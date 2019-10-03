@@ -15,8 +15,9 @@
 
 
  document.getElementById('btn_substract').addEventListener('click', function () {
-   var hey = "hey"; //esto no vale para nada
-   csInterface.evalScript('alertThis(\"hey\")'); //  solo funciona con strings puestas directamente. Con variables no funciona
+   paintCanvas();
+   //var hey = "hey"; //esto no vale para nada
+   //csInterface.evalScript('alertThis(\"hey\")'); //  solo funciona con strings puestas directamente. Con variables no funciona
  });
 
 

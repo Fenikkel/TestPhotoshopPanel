@@ -32,13 +32,17 @@ function makePreviewBase(prevName, indx){
 		//alert(indx);
 
 
-		//generatePreview(prevName); // DESCOMENTAR
+		generatePreview(prevName, indx); // DESCOMENTAR
+
+
+		//paintBaseCanvas();
+
 	} catch(e) {
 		alert(e.line + " - " + e);
 	}
 }
 
-function generatePreview(prevName){
+function generatePreview(prevName, indx){
 	//alert(prevName);
 
 	if (app.documents.length == 0) { //Si no hi ha res obert...
@@ -52,14 +56,29 @@ function generatePreview(prevName){
 		alert("Too many layers selected.");
 		return;
 	}
-	var activeLayer = activeDocument.activeLayer;// //activeDocument.artLayers[] //si desordenas los art layers ya no tienen el mismo indice
-	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected(), prevName) //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
+
+	/*var strlay ="";
+
+	for (var i = 0; i < app.activeDocument.artLayers.length; i++) { //pilla todas las capas que hay (menos los grupos[layerSets] y las capas dentro de los grupos)
+
+		strlay += " " + "Nombre" + app.activeDocument.artLayers[i].name + " indice: "+ i +"\n"
+
+
+  }
+
+	alert(indx);
+	*/
+	var activeLayer = activeDocument.activeLayer; //guardamos el active layer actual para al final retaurar este como active layer
+	activeDocument.activeLayer = activeDocument.artLayers[indx]; //hacemos que el seleccionado sea active layer para proceder a toda la mandanga
+	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected(), prevName); //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
 	if (previewInfoObj.url == "") {
+		alert("failed to create the preview");
 		return;
 	}
 	// save preview info in special place where UI can read it later
-	$.setenv('com.adobe.SimpleDissolve.preview'+prevName, previewInfoObj.toSource()); //MODIFICADO
-	activeDocument.activeLayer = activeLayer;
+	//var envstr = 'com.adobe.SimpleDissolve.'+prevName
+	$.setenv('com.adobe.SimpleDissolve.' + prevName, previewInfoObj.toSource()); //MODIFICADO
+	activeDocument.activeLayer = activeLayer; //volvemos a poner el active layer que teniamos
 
 }
 
@@ -451,8 +470,10 @@ function alertThis( var_string ){ // esta funcion sera llamada desde CSInterface
 
 function readPreviewInfo ()
 {
-	var retVal = $.getenv('com.adobe.SimpleDissolve.preview'); //te da un string con toda la info...? no el objeto clase
-	alert(retVal);
+	//var retVal = $.getenv('com.fenikkel.Substract.previewBase'); //te da un string con toda la info...? no el objeto clase
+
+	var retVal = $.getenv('com.adobe.SimpleDissolve.previewBase'); //te da un string con toda la info...? no el objeto clase
+	//alert(retVal);
 	return retVal;
 }
 
@@ -464,6 +485,7 @@ function readAllLayers ()
 	var contador = 1;
 
 	retVal[0] = contador;
+
 
 	//SI HI HA TEXT SE BUGGEJA!!! (tot lo que estiga baix de ell sen va a la merda) //https://www.adobe.com/content/dam/acom/en/devnet/photoshop/pdfs/photoshop-cc-javascript-ref-2019.pdf
   for (var i = 0; i < app.activeDocument.artLayers.length; i++) { //pilla todas las capas que hay (menos los grupos[layerSets] y las capas dentro de los grupos)

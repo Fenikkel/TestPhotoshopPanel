@@ -3,6 +3,8 @@ var gSubstractButton = document.getElementById("btn_substract");
  var gCanvasContext = $('#cnvsPreview')[0].getContext("2d");
  var gImageData = new Image();
 
+ var gBasePreviewInfo = {};
+
 
  var gWidthAspectRatio = 1; //aspect ratio
  var gFittedRectangle = { //rectangulo que respeta el aspect ratio de la imagen pero que no supera en ancho el canvas
@@ -30,6 +32,23 @@ function init() {
 
 }
 
+function drawBasePreview(in_resultStr) {
+
+  //alert(in_resultStr);
+
+  if (in_resultStr !== 'false') { //si hay previewInfo
+    gBasePreviewInfo = {};
+    eval("gBasePreviewInfo = " + in_resultStr) //https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/eval
+    //gHasSelection = (gPreviewInfo.selection.url.length > 0);
+    //loadPreview();
+    /*if (gHasSelection) {
+      loadSelection();
+    }*/
+    drawImage(gBasePreviewInfo.url); //FALLA A PARTIR D'ACI!!!
+  }
+  //document.onkeydown = onKeyDownCallbak;
+}
+
 function paintCanvas(){
   gCanvasContext.fillStyle = "#FFBB00";
 
@@ -37,10 +56,20 @@ function paintCanvas(){
   gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height())); //relleno todo el canvas de amarillo
 }
 
+function paintBaseCanvas(){
+  gImageData.src = "";
+  //gImageData = new Image(); //fatal
+  //gCanvasContext.clearRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
+  csInterface.evalScript("readPreviewInfo()", drawBasePreview);
+
+
+}
+
 function drawImage(imagePath) { //seria mejor otra variable con el nombre del canvas que queremos editar
 
+    //alert(imagePath);
 
-
+    //gImageData.src = "";
     gCanvasContext.clearRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
     gCanvasContext.fillStyle = "#00FABA";
     gCanvasContext.fillRect(0, 0, $('#cnvsPreview').width(), ($('#cnvsPreview').height()));
