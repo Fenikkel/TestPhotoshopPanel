@@ -10,6 +10,7 @@
    //csInterface.evalScript('readPreviewInfo()');
    //csInterface.evalScript('generateTemp()');
    paintCanvas();
+   csInterface.evalScript('desaturate()');
 
 
  });

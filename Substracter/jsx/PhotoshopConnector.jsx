@@ -36,24 +36,9 @@ function makePreviewBase(prevName, indx){
 	}
 }
 
-function makePreviewSubstracter(prevName, indx){
-	try {
-		var xLib = new ExternalObject("lib:\PlugPlugExternalObject");
-		//alert(prevName);
-		//alert(indx);
-
-		//generatePreview(prevName, indx); // DESCOMENTAR
-
-
-	} catch(e) {
-		alert(e.line + " - " + e);
-	}
-}
-
-
+/**************************************************************************************************************************************************/
 
 function generatePreview(prevName, indx){
-	//alert(prevName);
 
 	if (app.documents.length == 0) { //Si no hi ha res obert...
 		return;
@@ -67,17 +52,6 @@ function generatePreview(prevName, indx){
 		return;
 	}
 
-	/*var strlay ="";
-
-	for (var i = 0; i < app.activeDocument.artLayers.length; i++) { //pilla todas las capas que hay (menos los grupos[layerSets] y las capas dentro de los grupos)
-
-		strlay += " " + "Nombre" + app.activeDocument.artLayers[i].name + " indice: "+ i +"\n"
-
-
-  }
-
-	alert(indx);
-	*/
 	var activeLayer = activeDocument.activeLayer; //guardamos el active layer actual para al final retaurar este como active layer
 	activeDocument.activeLayer = activeDocument.artLayers[indx]; //hacemos que el seleccionado sea active layer para proceder a toda la mandanga
 	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected(), prevName); //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
@@ -86,15 +60,14 @@ function generatePreview(prevName, indx){
 		return;
 	}
 	// save preview info in special place where UI can read it later
-	//var envstr = 'com.adobe.SimpleDissolve.'+prevName
-	$.setenv('com.fenikkel.Substracter.' + prevName, previewInfoObj.toSource()); //MODIFICADO
+	$.setenv('com.fenikkel.Substracter.' + prevName, previewInfoObj.toSource());
 	activeDocument.activeLayer = activeLayer; //volvemos a poner el active layer que teniamos
 
 }
 
+/**************************************************************************************************************************************************/
 
 function createPreviews(in_doc,in_isLayerMaskSelected, prevName) {
-		//alert(prevName);
 
 		blockRefresh(); // fa coses rares
 		var hasSelection = false;
@@ -140,6 +113,10 @@ function createPreviews(in_doc,in_isLayerMaskSelected, prevName) {
 						selectionDoc.artLayers[0].isBackgroundLayer = false;
 				}
 				paste() //hace pegado (a la capa activa del cdocumento activo supongo)
+				//https://gist.github.com/doctyper/992342
+				//app.activeDocument.activeLayer.desaturate();
+				//selectionDoc.activeLayer.desaturate();//CUIDAUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+				//alert("pausa");
 				var selectionFile = File(Folder.temp+"/"+prevName+".png"); //hacemos el path de temp para la seleccion
 				saveToPNG(selectionDoc, selectionFile); //guardamos la seleccion en formato PNG a temp
 				if (selectionFile.exists) { //si se ha creado el archivo (si existe seleccion)
@@ -183,6 +160,8 @@ function createPreviews(in_doc,in_isLayerMaskSelected, prevName) {
 	return retVal
 }
 
+/**************************************************************************************************************************************************/
+
 function getURL(in_file) {
 	if ($.os.match(/^mac/gi) != null) {
 		var retVal = "file://" + in_file.absoluteURI;
@@ -191,6 +170,10 @@ function getURL(in_file) {
 	}
 	return retVal
 }
+
+
+/**************************************************************************************************************************************************/
+
 
 function paste() {
 	var idpast = charIDToTypeID( "past" );
@@ -203,6 +186,7 @@ function copy() {
 	var idcopy = charIDToTypeID( "copy" );
 	executeAction( idcopy, undefined, DialogModes.NO );
 }
+
 /*********************************/
 
 function saveLayerMaskToPNG(in_doc,in_pngFile){
@@ -405,104 +389,29 @@ function blockRefresh(){
 	executeAction( idsetd, desc, DialogModes.NO );
 }
 
-function generateTemp(){
-	var initialPrefs = app.preferences.rulerUnits;
-	app.preferences.rulerUnits = Units.PIXELS;
-	//var dir = app.activeDocument.path;
-	//var dir ="~/Documents";
-	//var dir ="~/Temp"; //Nope
-	//var dir ="~/tmp"; //Nope
-	var dir ="~/AppData/Local/Temp";
-	//alert(dir);
-
-	//Make a copy
-
-
-	app.activeDocument.artLayers[0].copy(false);
-	//alert(app.activeDocument.mode);
-	//var docCopy = app.documents.add(app.activeDocument.width, app.activeDocument.height, app.activeDocument.resolution , "DocumentTemporal");//, app.activeDocument.mode, DocumentFill.TRANSPARENT, app.activeDocument.pixelAspectRatio, app.activeDocument.bitsPerChannel, app.activeDocument.colorProfileName);
-	var docCopy = app.activeDocument.duplicate();
-	var tope = app.activeDocument.layers.length;
-	for (var i = 0; i < tope; i++) {
-		if(i == tope-1){
-			app.activeDocument.activeLayer.clear();
-
-		}
-		else{
-			app.activeDocument.activeLayer.remove();
-
-		}
-	}
-	//app.activeDocument.layers.removeAll();
-	app.activeDocument.paste(false);
-
-	//app.activeDocument.artLayers[0].desaturate();
-
-	var origwidth = docCopy.width.value;
-	var origHeight = docCopy.height.value;
-
-//hacemos las opciones de guardado
-	var sfw  = new ExportOptionsSaveForWeb();
-	sfw.format = SaveDocumentType.PNG;
-	sfw.PNG8 = false; //use PNG-24
-	sfw.transparency = true;
-
-	var destFolder = dir;
-	//var destFolder = Folder(dir).selectDlg("Selecto folder");
-
-	var iconName = "nombreTemporal.png";
-
-	try{
-		docCopy.exportDocument(new File(destFolder + "/" + iconName), ExportType.SAVEFORWEB, sfw);
-	}
-	catch(exception){
-		alert("ERROR: " + exception);
-	}
-	finally{ //esto se hace hay error o no
-		app.preferences.rulerUnits = initialPrefs;
-
-		if(docCopy != null){
-				docCopy.close(SaveOptions.DONOTSAVECHANGES);
-		}
-	}
-
-}
-
-
-
-function sayHello(){ // esta funcion sera llamada desde CSInterface que hara de mediador entre el boton del panel (tu) y las caracteristicas de CEP (photoshop)
-  alert("Hello from ExtendScript");
-}
-
-function alertThis( var_string ){ // esta funcion sera llamada desde CSInterface que hara de mediador entre el boton del panel (tu) y las caracteristicas de CEP (photoshop)
-  alert(var_string);
-}
+/**************************************************************************************************************************************************/
 
 function readPreviewInfo (prevStr)
 {
-	//var retVal = $.getenv('com.fenikkel.Substract.previewBase'); //te da un string con toda la info...? no el objeto clase
-	var retVal = $.getenv('com.fenikkel.Substracter.' + prevStr); //te da un string con toda la info...? no el objeto clase
+	var retVal = $.getenv('com.fenikkel.Substracter.' + prevStr); //te da un string con toda la info de la imagen guardada en temp con ese nombre
 
-//	var retVal = $.getenv('com.adobe.SimpleDissolve.previewBase'); //te da un string con toda la info...? no el objeto clase
-	//alert(retVal);
 	return retVal;
 }
 
+/**************************************************************************************************************************************************/
 
 function readAllLayers ()
 {
 	var retVal = [];
-  //var docReference = app.activeDocument;
 	var contador = 1;
 
 	retVal[0] = contador;
 
-
 	//SI HI HA TEXT SE BUGGEJA!!! (tot lo que estiga baix de ell sen va a la merda) //https://www.adobe.com/content/dam/acom/en/devnet/photoshop/pdfs/photoshop-cc-javascript-ref-2019.pdf
+
   for (var i = 0; i < app.activeDocument.artLayers.length; i++) { //pilla todas las capas que hay (menos los grupos[layerSets] y las capas dentro de los grupos)
-   //alert(app.activeDocument.artLayers[i].name);
+
     if(app.activeDocument.artLayers[i].kind == LayerKind.NORMAL){
-			//alert(app.activeDocument.artLayers[i].name);
 
 			indice= i;
 			contador++;
@@ -511,12 +420,18 @@ function readAllLayers ()
         name: app.activeDocument.artLayers[i].name,
         index: i
       };
-			retVal[i+1] = layer;
 
+			retVal[i+1] = layer;
     }
   }
 
 	retVal[0] = contador; //asi tendremos el length del array de objetos
 
 	return retVal.toSource();
+}
+
+function desaturate(){
+
+	app.activeDocument.activeLayer.desaturate();
+
 }

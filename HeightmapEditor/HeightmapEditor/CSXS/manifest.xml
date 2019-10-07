@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Version = CEP version
+ExtensionBundleId = podemos hacer un bundle de varios paneles
+ExtensionBundleVersion = version del bundle
+-->
+<ExtensionManifest
+  Version="9.0"
+  ExtensionBundleId="com.fenikkel.HeightmapEditor"
+  ExtensionBundleVersion="1.0.0"
+  ExtensionBundleName="HeightmapEditor"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <ExtensionList>
+    <!-- Extension Id = id unica para la extension. Le anyadimos .panel1 o .panel para distinguirlo de extensionbundleid-->
+    <Extension Id="com.fenikkel.HeightmapEditor.Panel" Version="1.0" />
+  </ExtensionList>
+
+  <ExecutionEnvironment>
+    <HostList> <!-- Host tag -->
+      <!-- Name = codigo de las aplicaciones soportadas (para photoshop ha de ser PHXS y PHSP ) -->
+      <!-- Version = la version sopartada ( de 16.0 hacia adelante)  -->
+      <Host Name="PHXS" Version="16.0" />
+      <Host Name="PHSP" Version="16.0" />
+    </HostList>
+
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="6.0" />
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+
+  <DispatchInfoList>
+
+    <Extension Id="com.fenikkel.HeightmapEditor.Panel">
+      <DispatchInfo >
+        <!-- Si tubieramos un bundle de varios paneles para varios programas (photoshop y premiere por ejemplo), tendiamos que especificar una host list -->
+        <Resources>
+          <MainPath>./index.html</MainPath> <!-- the HTML entry point of the Panel -->
+          <ScriptPath>./jsx/photoshopConnector.jsx</ScriptPath> <!-- the JSX entry point of the Panel  --> <!-- este es el script que interacciona con photoshop  -->
+        </Resources>
+
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible> <!-- Parece que el autovisible es para decirle que panel queremos mostrar (que archivo HTML?) -->
+          <StartOn>
+						<Event>com.fenikkel.event.loadHeightmapsEditor</Event>
+					</StartOn>
+        </Lifecycle>
+
+        <UI>
+
+          <Type>ModalDialog</Type>
+          <Menu></Menu>
+
+          <Geometry> <!--  sets the default (required), max and min (optional) size of the panel  -->
+            <Size>
+              <Height>600</Height>
+              <Width>500</Width>
+            </Size>
+            <MinSize>
+              <Height>100</Height>
+              <Width>150</Width>
+            </MinSize>
+            <MaxSize>
+              <Height>600</Height>
+              <Width>600</Width>
+            </MaxSize>
+          </Geometry>
+
+          <Icons>
+            <Icon Type="Normal">./icons/iconNormal.png</Icon>
+            <Icon Type="RollOver">./icons/iconRollover.png</Icon>
+            <Icon Type="Disabled">./icons/iconDisabled.png</Icon>
+            <Icon Type="DarkNormal">./icons/iconDarkNormal.png</Icon>
+            <Icon Type="DarkRollOver">./icons/iconDarkRollover.png</Icon>
+          </Icons>
+
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
