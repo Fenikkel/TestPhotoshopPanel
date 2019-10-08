@@ -343,6 +343,13 @@ function readPreviewInfo (prevStr)
 	return retVal;
 }
 
+function readPreviewInfoTest ()
+{
+	var retVal = {numero: 1, string: "hola desde readPreviewInfoTest"}; //te da un string con toda la info de la imagen guardada en temp con ese nombre
+
+	return retVal.toSource();
+}
+
 /**************************************************************************************************************************************************/
 
 function readAllLayers ()

@@ -5,7 +5,7 @@ var gSubstractButton = document.getElementById("btn_substract");
  var gCanvasContextFinal = $('#cnvsFinal')[0].getContext("2d");
 
  var gImageData = new Image();
-  var gImageSubstracterData = new Image();
+ var gImageSubstracterData = new Image();
 
 var gBasePreviewInfo = {};
 var gSubstracterPreviewInfo = {};

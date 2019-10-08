@@ -2,19 +2,31 @@
 
  var csInterface = new CSInterface(); //crea una instancia de CSInterface
 
+ var gPreviewInfo = {};
+
  function init(){
    csInterface.setWindowTitle("Heightmap Editor");
 
-   csInterface.addEventListener("com.adobe.event.unloadDissolveExtension", closeUI);
+   csInterface.addEventListener("com.fenikkel.event.unloadUIPanel", closeUI);
 
 
+ }
+
+
+ function drawPreviewCallback(in_resultStr) {
+   if (in_resultStr !== 'false') {
+     eval("gPreviewInfo = " + in_resultStr);
+     alert(gPreviewInfo.string);
+     //gHasSelection = (gPreviewInfo.selection.url.length > 0);
+     //loadPreview();
+   }
+   //document.onkeydown = onKeyDownCallbak;
  }
 
  function closeUI(event) {
 
    csInterface.closeExtension();
  }
-
 
  function requestApplyChanges(event) {
 
@@ -42,6 +54,7 @@
 
    try {
      alert("testbutton");
+     csInterface.evalScript("readPreviewInfoTest()", drawPreviewCallback);
      requestApplyChanges();
    } catch(e) {
      alert(e.line + " - " + e);
