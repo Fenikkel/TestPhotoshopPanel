@@ -50,11 +50,44 @@
    csInterface.dispatchEvent(msgEvent);
  }
 
+
+ //Crea un png en tmp con el resultado final del preview
+  function createPreviewFile (event) {
+    var finalCanvas = $('#cnvsFinal')[0]; //en el nuevo indel.html no esta este canvas ^^'
+    var context = finalCanvas.getContext('2d');
+
+    var decodedStr = window.atob(finalCanvas.toDataURL("image/png",1).replace(/^.+\,/g,""));
+    csInterface.evalScript("storeHeightmapImage(\""+escape(decodedStr)+"\")", storeHeightmapImageCallback);
+  }
+
+  function storeHeightmapImageCallback (in_msg) {
+  	if (in_msg  == "true") {
+      alert("Paso 1: creado el fichero en tmp");
+  		csInterface.evalScript("applyChanges()",applyChangesCallback);
+  	} else {
+  		csInterface.evalScript("alert('Could not create the dissolve file!)");
+  		csInterface.closeExtension();
+  	}
+  }
+
+  function applyChangesCallback (in_msg) {
+  	if (in_msg  == "false") {
+  		csInterface.evalScript("alert('Could not apply the changes!)");
+  	}else{
+      alert("SE HA CREADO");
+    }
+  	csInterface.closeExtension();
+  }
+
+
  document.getElementById('btn_test').addEventListener('click', function () { //le añade al boton un eventlistener...
 
    try {
      alert("testbutton");
-     csInterface.evalScript("readPreviewInfoTest()", drawPreviewCallback);
+     createPreviewFile(); //TOT COMENÇA ACI
+     //alert("breakpoint");
+
+     //csInterface.evalScript("readPreviewInfoTest()", drawPreviewCallback);
      requestApplyChanges();
    } catch(e) {
      alert(e.line + " - " + e);
