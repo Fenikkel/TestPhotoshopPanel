@@ -15,6 +15,8 @@ ExtensionBundleVersion = version del bundle
   <ExtensionList>
     <!-- Extension Id = id unica para la extension. Le anyadimos .panel1 o .panel para distinguirlo de extensionbundleid-->
     <Extension Id="com.fenikkel.HeightmapEditor.Panel" Version="1.0" />
+    <Extension Id="com.fenikkel.HeightmapEditor.ApplyChanges" Version="1.0" />
+
   </ExtensionList>
 
   <ExecutionEnvironment>
@@ -81,28 +83,28 @@ ExtensionBundleVersion = version del bundle
       </DispatchInfo>
     </Extension>
 
-        <Extension Id="com.fenikkel.HeightmapEditor.ApplyChanges">
-    			<DispatchInfo>
-    				<Resources>
-    					<MainPath>./ApplyChanges/index.html</MainPath>
-    					<ScriptPath>./ApplyChanges/jsx/photoshopConnector.jsx</ScriptPath>
-    				</Resources>
+      <Extension Id="com.fenikkel.HeightmapEditor.ApplyChanges">
+    		<DispatchInfo>
+    			<Resources>
+    				<MainPath>./ApplyChanges/index.html</MainPath>
+    				<ScriptPath>./ApplyChanges/jsx/photoshopConnector.jsx</ScriptPath>
+    			</Resources>
 
-    				<Lifecycle>
-    					<AutoVisible>false</AutoVisible>
-    				</Lifecycle>
+    			<Lifecycle>
+    				<AutoVisible>false</AutoVisible>
+    			</Lifecycle>
 
-    				<UI>
-    					<Type>Custom</Type>
-    					<Geometry>
-    						<Size>
-    							<Height>1</Height>
-    							<Width>1</Width>
-    						</Size>
-    					</Geometry>
-    				</UI>
-    			</DispatchInfo>
-    		</Extension>
+    			<UI>
+    				<Type>Custom</Type>
+    				<Geometry>
+    					<Size>
+    						<Height>1</Height>
+    						<Width>1</Width>
+    					</Size>
+    				</Geometry>
+    			</UI>
+    		</DispatchInfo>
+    	</Extension>
 
   </DispatchInfoList>
 </ExtensionManifest>

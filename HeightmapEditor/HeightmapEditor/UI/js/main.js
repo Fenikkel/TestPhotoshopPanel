@@ -2,23 +2,43 @@
 
  var csInterface = new CSInterface(); //crea una instancia de CSInterface
 
+ function init(){
+   csInterface.setWindowTitle("Heightmap Editor");
+   //csInterface.addEventListener("com.fenikkel.event.unloadEditorUI", closeUI);
+ }
+
+ function closeUI(event) {
+
+   csInterface.closeExtension();
+ }
+
+
+ function requestApplyChanges(event) {
+
+   try {
+     //alert("iep");
+     csInterface.requestOpenExtension("com.fenikkel.HeightmapEditor.ApplyChanges", "") //function(extensionId, params)
+     /*setTimeout(function () { //hace la funcion despues de medio segundo
+       //alert("apply");
+       dispatchEvent("com.fenikkel.event.applyChanges", "")
+     }, 500)*/
+   } catch(e) {
+   	alert(e.line + " - " + e);
+   }
+ }
+
  document.getElementById('btn_test').addEventListener('click', function () { //le añade al boton un eventlistener...
 
-   //paintCanvas();
-   requestApplyDissolve();
+   try {
+     alert("testbutton");
+     requestApplyChanges();
+   } catch(e) {
+     alert(e.line + " - " + e);
+   }
 
  });
 
-
- function requestApplyDissolve(event) {
-
-
-     csInterface.requestOpenExtension("com.fenikkel.HeightmapEditor.ApplyChanges", "") //function(extensionId, params)
-     /*setTimeout(function () { //hace la funcion despues de medio segundo
-       dispatchEvent("com.adobe.event.applyDissolve", JSON.stringify(gPreviewInfo))
-     }, 500)*/
-
- }
+ init();
 
 
 }());

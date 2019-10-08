@@ -30,7 +30,7 @@ function checkProject(){
 		alert("The document color mode must be in grayscale for start the plugin");
 	}
 
-	if else(activeDocument.height != activeDocument.width){
+	else if (activeDocument.height != activeDocument.width){
 		alert("The document size must be 1:1 (same height and width)");
 	}
 	else{
