@@ -5,7 +5,13 @@
  var gPreviewInfo;
 
  function init() {
-   //dispatchEvent("com.fenikkel.event.unloadEditorUI");
+
+   try {
+     prepareEvent("com.adobe.event.unloadDissolveExtension");
+   } catch(e) {
+     alert(e.line + " - " + e);
+   }
+
 
   setTimeout(function () {
     alert("CERRANDO");
@@ -14,7 +20,7 @@
 
   }, 4000)
 
-  //csInterface.addEventListener("com.fenikkel.event.applyChanges", getPreviewInfoCallback); //se añade un evento al principio que si es llamado desde el main de la UI como dispatchEvent("com.adobe.event.applyDissolve", JSON.stringify(gPreviewInfo)) se ejecutara
+    //csInterface.addEventListener("com.fenikkel.event.applyChanges", getPreviewInfoCallback); //se añade un evento al principio que si es llamado desde el main de la UI como dispatchEvent("com.adobe.event.applyDissolve", JSON.stringify(gPreviewInfo)) se ejecutara
  }
 /*
  function getPreviewInfoCallback (event) {
@@ -31,6 +37,15 @@
    }
  }*/
 
+
+ function prepareEvent(in_eventStr,in_data) { //hacemos un evento de photoshop para poder llamarlo desde el otro panel(el invisible)
+   var msgEvent = new CSEvent(in_eventStr);
+   msgEvent.scope = "APPLICATION";
+   msgEvent.data = in_data;
+   msgEvent.appId = csInterface.getApplicationID();
+   msgEvent.extensionId = csInterface.getExtensionID();
+   csInterface.dispatchEvent(msgEvent);
+ }
 
  init();
 

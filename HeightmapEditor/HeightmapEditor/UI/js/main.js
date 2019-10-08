@@ -4,7 +4,10 @@
 
  function init(){
    csInterface.setWindowTitle("Heightmap Editor");
-   //csInterface.addEventListener("com.fenikkel.event.unloadEditorUI", closeUI);
+
+   csInterface.addEventListener("com.adobe.event.unloadDissolveExtension", closeUI);
+
+
  }
 
  function closeUI(event) {
