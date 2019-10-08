@@ -1,3 +1,5 @@
+
+//Ponemos el script en el stack del menu filter
 /*
 // BEGIN__HARVEST_EXCEPTION_ZSTRING
 <javascriptresource>
@@ -28,19 +30,15 @@ function checkProject(){
 		alert("The document color mode must be in grayscale for start the plugin");
 	}
 
-	if(activeDocument.height != activeDocument.width){
+	if else(activeDocument.height != activeDocument.width){
 		alert("The document size must be 1:1 (same height and width)");
 	}
 	else{
-		//alert("Funciona");
-
+			loadPanel();
 	}
-
-	loadPanel();
-
 }
 
-function loadPanel() { //como que hace un evento...
+function loadPanel() { //Cargamos el panel editor
 		var eventObj = new CSXSEvent();
 		eventObj.type = "com.fenikkel.event.loadHeightmapsEditor";
 		eventObj.message = ""
