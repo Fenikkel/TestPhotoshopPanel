@@ -384,11 +384,6 @@ function readAllLayers ()
 }
 
 
-/*function applyChanges(){
-
-	activeDocument.artLayers.add();
-
-}*/
 
 
 //aaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaa
@@ -423,7 +418,7 @@ function applyChanges() {
 // Get the heightmap.png and apply it to layer
 //------------------------------------------------------------------------------
 
-function applyChangesFilter() {
+/*function applyChangesFilter() {
 	var totalSteps = 10; // for progress bar
 	app.doForcedProgress('Creating the heightmap...', 'subTask()');
 
@@ -435,7 +430,7 @@ function applyChangesFilter() {
 			}
 			var doc = app.activeDocument;
 			var hiddenChannels = getHiddenChannels(doc);
-			var heightFile = File(Folder.temp + "/heightmap.png");
+			var heightFile = File(Folder.temp + "/heightmap.png"); //tiene el substract hecho pero a escala del canvas
 			if (!heightFile.exists) {
 				alert("Cannot find file: " + heightFile.fsName);
 				return;
@@ -451,14 +446,20 @@ function applyChangesFilter() {
 			}
 			heightDoc.close(SaveOptions.DONOTSAVECHANGES);
 			app.activeDocument = doc;
+
+			//test
+
+			var newLayer = activeDocument.artLayers.add();
+			newLayer.name = "Heightmap texture"; //si tenen el mateix nom que?
+			activeDocument.activeLayer = newLayer;
+
+			alert("creado");
+
 			if (!app.updateProgress(6, totalSteps)) {
 				return false;
 			}
 			var hasSelection = false;
-			/*if (in_isLayerMask) {
-				showMaskChannel(true);
-				hideLayers(doc);
-			}*/
+
 			try {
 				makeWorkPath();
 				var pathItems = doc.pathItems["Work Path"];
@@ -471,6 +472,7 @@ function applyChangesFilter() {
 			} catch (e) {
 				doc.paste();
 			}
+
 			if (!app.updateProgress(8, totalSteps)) {
 				return false;
 			}
@@ -478,6 +480,7 @@ function applyChangesFilter() {
 			var idMrgtwo = charIDToTypeID("Mrg2");
 			var desc163 = new ActionDescriptor();
 			executeAction(idMrgtwo, desc163, DialogModes.NO);
+			alert("borrado");
 			if (!app.updateProgress(9, totalSteps)) {
 				return false;
 			}
@@ -487,6 +490,65 @@ function applyChangesFilter() {
 			gApplySuccessful = true;
 
 			reinstateHiddenChannels(hiddenChannels);
+
+		} catch (e) {
+			alert("Line: " + e.line + " - " + e);
+		}
+	}
+}
+*/
+
+function applyChangesFilter() {
+	var totalSteps = 10; // for progress bar
+	app.doForcedProgress('Creating the heightmap...', 'subTask()');
+
+	function subTask() {
+		try {
+			gApplySuccessful = false
+			if (!app.updateProgress(2, totalSteps)) {
+				return false;
+			}
+			var doc = app.activeDocument;
+			var heightFile = File(Folder.temp + "/heightmap.png"); //tiene el substract hecho pero a escala del canvas
+			if (!heightFile.exists) {
+				alert("Cannot find file: " + heightFile.fsName);
+				return;
+			}
+			var heightDoc = app.open(heightFile);
+			if (!app.updateProgress(4, totalSteps)) {
+				return false;
+			}
+			heightDoc.selection.selectAll();
+			heightDoc.selection.copy(true); //copiamos en el documento nuevo toda la imagen
+			if (!app.updateProgress(5, totalSteps)) {
+				return false;
+			}
+			heightDoc.close(SaveOptions.DONOTSAVECHANGES);
+			app.activeDocument = doc;
+
+			var newLayer = activeDocument.artLayers.add();
+			newLayer.name = "Heightmap texture"; //si tenen el mateix nom que?
+			activeDocument.activeLayer = newLayer;
+
+			alert("creado");
+
+			if (!app.updateProgress(6, totalSteps)) {
+				return false;
+			}
+
+			doc.paste();
+
+
+			if (!app.updateProgress(8, totalSteps)) {
+				return false;
+			}
+
+			alert("borrado");
+			if (!app.updateProgress(9, totalSteps)) {
+				return false;
+			}
+
+			gApplySuccessful = true;
 
 		} catch (e) {
 			alert("Line: " + e.line + " - " + e);

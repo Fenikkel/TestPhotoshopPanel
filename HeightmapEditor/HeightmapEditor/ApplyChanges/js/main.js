@@ -10,17 +10,10 @@ console.log("Apply changes started");
 
 
    try {
-     //csInterface.addEventListener("com.fenikkel.event.applyChanges", getPreviewInfoCallback); //se añade un evento al principio que si es llamado desde el main de la UI como dispatchEvent("com.adobe.event.applyDissolve", JSON.stringify(gPreviewInfo)) se ejecutara
+
    } catch(e) {
      alert(e.line + " - " + e);
    }
-
-
-  /*setTimeout(function () { //TEMPORAL
-    alert("CERRANDO");
-    csInterface.closeExtension();
-
-  }, 4000)*/
 
  }
 
@@ -28,7 +21,6 @@ console.log("Apply changes started");
    if (event) {
      //alert("hallo");
      gPreviewInfo = event.data;
-     //gHasSelection = (gPreviewInfo.selection.url.length > 0);
      alert(gPreviewInfo);
      prepareEvent("com.fenikkel.event.unloadUIPanel");
 

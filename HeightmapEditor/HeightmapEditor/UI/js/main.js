@@ -17,8 +17,7 @@
    if (in_resultStr !== 'false') {
      eval("gPreviewInfo = " + in_resultStr);
      alert(gPreviewInfo.string);
-     //gHasSelection = (gPreviewInfo.selection.url.length > 0);
-     //loadPreview();
+
    }
    //document.onkeydown = onKeyDownCallbak;
  }
@@ -33,9 +32,10 @@
    try {
      //alert("iep");
      csInterface.requestOpenExtension("com.fenikkel.HeightmapEditor.ApplyChanges", "") //function(extensionId, params)
-     setTimeout(function () { //hace la funcion despues de medio segundo
+    /* setTimeout(function () { //hace la funcion despues de medio segundo
        prepareEvent("com.fenikkel.event.applyChanges", "parametros")
      }, 500)
+     */
    } catch(e) {
    	alert(e.line + " - " + e);
    }
@@ -62,7 +62,7 @@
 
   function storeHeightmapImageCallback (in_msg) {
   	if (in_msg  == "true") {
-      alert("Paso 1: creado el fichero en tmp");
+      //alert("Paso 1: creado el fichero en tmp");
   		csInterface.evalScript("applyChanges()",applyChangesCallback);
   	} else {
   		csInterface.evalScript("alert('Could not create the dissolve file!)");
@@ -83,11 +83,11 @@
  document.getElementById('btn_test').addEventListener('click', function () { //le añade al boton un eventlistener...
 
    try {
-     alert("testbutton");
+     //alert("testbutton");
+     csInterface.evalScript("newLayer()");
      createPreviewFile(); //TOT COMENÇA ACI
-     //alert("breakpoint");
 
-     //csInterface.evalScript("readPreviewInfoTest()", drawPreviewCallback);
+
      requestApplyChanges();
    } catch(e) {
      alert(e.line + " - " + e);
