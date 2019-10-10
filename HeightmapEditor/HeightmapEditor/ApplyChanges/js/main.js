@@ -4,7 +4,8 @@ console.log("Apply changes started");
 
  var csInterface = new CSInterface(); //crea una instancia de CSInterface
 
- var gPreviewInfo;
+ var gBaseInfo = {};
+ var gSubstracterInfo = {};
 
  var gBaseIndexLayer = 0;
  var gSubstracterIndexLayer = 1;
@@ -36,9 +37,28 @@ console.log("Apply changes started");
 
    csInterface.evalScript("createTmp( \"" +  gBaseIndexLayer + "\""   + "\,"   +    "\""  + gSubstracterIndexLayer  +"\")"); //aqui porque sino no se actualizan las variables gBaseIndexlayer
 
+   csInterface.evalScript("readBaseDataInfo()", readBaseDataCallback);
+   csInterface.evalScript("readSubstracterDataInfo()", readSubstracterDataCallback);
 
 }
 
+function readBaseDataCallback(in_resultStr) {
+  if (in_resultStr !== 'false') {
+    eval("gBaseInfo = " + in_resultStr)
+    //alert(gBaseInfo.url);
+    //loadPreview();
+
+  }
+}
+
+function readSubstracterDataCallback(in_resultStr) {
+  if (in_resultStr !== 'false') {
+    eval("gSubstracterInfo = " + in_resultStr)
+    //alert(gSubstracterInfo.url);
+    //loadPreview();
+
+  }
+}
 
  function getPreviewInfoCallback (event) {
    if (event) {
