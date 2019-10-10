@@ -22,9 +22,7 @@ function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
     alert("baseInfoObj empty");
     //return;
   }
-  else{
-    alert(baseInfoObj.url);
-  }
+
 
   mainDoc.activeLayer = mainDoc.artLayers[substracterIdx];
 
@@ -33,9 +31,7 @@ function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
     alert("substracterInfoObj empty");
     //return;
   }
-  else{
-    alert(substracterInfoObj.url);
-  }
+
 
   // save preview info in special place where UI can read it later
   $.setenv('com.fenikkel.HeightmapEditor.baseData',baseInfoObj.toSource());
@@ -66,17 +62,17 @@ function createData(in_doc, in_name){
     // Other progress APIs must be called periodically to update the progress bar and allow canceling.
     // app.doProgress returns nothing so we use variable in parent scope
     app.doForcedProgress("Preparing " +in_name +"...",'subTask()');
-    function subTask(){
+    function subTask(){//ESCONDE LOS LAYERS Y SE GUARDA EL PROYECTO EN FORMATO PNG
       try {
         if(!app.updateProgress(1,totalSteps)){return false;}
         var visibleLayers = hideLayers(in_doc)
         if(!app.updateProgress(2,totalSteps)){return false;}
-        copy();
+        //copy();
         if(!app.updateProgress(3,totalSteps)){return false;}
-
+        //activeDocument.activeLayer = activeDocument.artLayers[4];
         if(!app.updateProgress(4,totalSteps)){return false;}
 
-        paste();
+        //paste();
 
         // yes we skipped some steps because export image takes longer
         if(!app.updateProgress(6,totalSteps)){return false;}
