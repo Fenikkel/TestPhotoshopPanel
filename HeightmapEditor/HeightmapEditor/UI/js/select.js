@@ -1,5 +1,8 @@
 var gSelect = document.getElementById("layerSelect");
 var gSelect2 = document.getElementById("layerSelect2");
+var gIndexBase = 0;
+var gIndexSubstracter = 1;
+
 
 var csInterface = new CSInterface();
 var gAvaliableArtLayers;
@@ -45,9 +48,10 @@ function addOption(optionName){
 gSelect.addEventListener('change', function() {
     var index = gSelect.selectedIndex;
 
-    if(index - 1 < 0){
+    if( (index - 1) < 0){
       return;
     }
+    gIndexBase = index - 1; //asi tenemos el index real de art layers
 
     setBasePrevName(gAvaliableArtLayers[index].name);
 
@@ -61,9 +65,12 @@ gSelect.addEventListener('change', function() {
 gSelect2.addEventListener('change', function() {
   var index = gSelect2.selectedIndex;
 
-  if(index - 1 < 0){
+  if( (index - 1) < 0){
     return;
   }
+
+  gIndexSubstracter = index - 1;
+
 
   setSubstracterPrevName(gAvaliableArtLayers[index].name);
 

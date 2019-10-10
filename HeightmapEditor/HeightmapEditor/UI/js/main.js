@@ -4,14 +4,28 @@
 
  var gPreviewInfo = {};
 
+ //var gCanvasFinal = $('#cnvsFinal')[0];
+
  function init(){
    csInterface.setWindowTitle("Heightmap Editor");
 
    csInterface.addEventListener("com.fenikkel.event.unloadUIPanel", closeUI);
 
+   //csInterface.evalScript("getDocSize()", resizeCanvas);
+
 
  }
+/*
+function resizeCanvas(str){
+    var strH = String(str);
+alert(strH);
+    strH.slice(0, 3);
+    alert(strH);
 
+  gCanvasFinal.height = str;
+
+}
+*/
 
  function drawPreviewCallback(in_resultStr) {
    if (in_resultStr !== 'false') {
@@ -80,15 +94,33 @@
   }
 
 
+  function startApplyChanges() {
+
+    try {
+      csInterface.requestOpenExtension("com.fenikkel.HeightmapEditor.ApplyChanges", "") //function(extensionId, params)
+      setTimeout(function () { //hace la funcion despues de medio segundo
+        var layersIndex = {base: gIndexBase,
+                          substracter: gIndexSubstracter};
+        prepareEvent("com.fenikkel.event.applyChanges", layersIndex);
+      }, 500)
+
+    } catch(e) {
+    	alert(e.line + " - " + e);
+    }
+  }
+
  document.getElementById('btn_test').addEventListener('click', function () { //le añade al boton un eventlistener...
 
    try {
-     //alert("testbutton");
-     csInterface.evalScript("newLayer()");
-     createPreviewFile(); //TOT COMENÇA ACI
 
+     //alert(gIndexBase);
+     //csInterface.evalScript("newLayer()");
 
-     requestApplyChanges();
+     startApplyChanges();
+     //LO BO
+     /*createPreviewFile(); //TOT COMENÇA ACI
+     requestApplyChanges();*/
+
    } catch(e) {
      alert(e.line + " - " + e);
    }

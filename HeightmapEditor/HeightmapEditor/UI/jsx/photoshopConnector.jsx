@@ -649,3 +649,21 @@ function blockRefresh() {
 	desc.putObject(idT, idPbkO, desc2);
 	executeAction(idsetd, desc, DialogModes.NO);
 }
+
+/*
+function getDocSize(){
+
+	var rulerUnits = app.preferences.rulerUnits;
+	if (app.preferences.rulerUnits != Units.PIXELS) { // posem a pixels la medida
+		app.preferences.rulerUnits = Units.PIXELS;
+	}
+
+	var height = activeDocument.height; //en unit value
+	var width = activeDocument.width; //en unit value
+
+	if (app.preferences.rulerUnits != rulerUnits) { //volvemos a poner las unidades anteriores
+		app.preferences.rulerUnits = rulerUnits
+	}
+
+	return height;
+}*/
