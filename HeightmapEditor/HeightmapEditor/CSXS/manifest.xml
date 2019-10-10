@@ -91,16 +91,24 @@ ExtensionBundleVersion = version del bundle
     			</Resources>
 
     			<Lifecycle>
-    				<AutoVisible>false</AutoVisible>
+    				<AutoVisible>true</AutoVisible>
     			</Lifecycle>
 
     			<UI>
-    				<Type>Custom</Type>
+    				<Type>ModalDialog</Type>
     				<Geometry>
     					<Size>
-    						<Height>1</Height>
-    						<Width>1</Width>
+    						<Height>700</Height>
+    						<Width>700</Width>
     					</Size>
+            <MinSize>
+              <Height>100</Height>
+              <Width>150</Width>
+            </MinSize>
+            <MaxSize>
+              <Height>800</Height>
+              <Width>800</Width>
+            </MaxSize>
     				</Geometry>
     			</UI>
     		</DispatchInfo>
