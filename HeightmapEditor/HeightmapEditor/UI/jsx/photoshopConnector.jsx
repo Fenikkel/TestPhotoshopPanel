@@ -23,6 +23,7 @@ function generatePreview(prevName, indx){
 
 	var activeLayer = activeDocument.activeLayer; //guardamos el active layer actual para al final retaurar este como active layer
 	activeDocument.activeLayer = activeDocument.artLayers[indx]; //hacemos que el seleccionado sea active layer para proceder a toda la mandanga
+	activeDocument.activeLayer.visible = true; 
 	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected(), prevName); //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
 	if (previewInfoObj.url == "") {
 		alert("failed to create the preview");
@@ -38,7 +39,7 @@ function generatePreview(prevName, indx){
 
 function createPreviews(in_doc,in_isLayerMaskSelected, prevName) {
 
-		blockRefresh(); // fa coses rares
+		blockRefresh();
 		var hasSelection = false;
 		var rulerUnits = app.preferences.rulerUnits;
 		if (app.preferences.rulerUnits != Units.PIXELS) { // posem a pixels la medida

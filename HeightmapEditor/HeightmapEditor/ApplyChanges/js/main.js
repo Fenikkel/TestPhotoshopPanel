@@ -42,10 +42,11 @@ console.log("Apply changes started");
        }, 500)
      }, 500)
 
-     setTimeout(function () {
+    /* setTimeout(function () {
        alert("cerramos")
        csInterface.closeExtension();
      }, 6000)
+     */
 
    } catch(e) {
      alert(e.line + " - " + e);
@@ -130,22 +131,13 @@ function decodeData(){
 
 function canvasToLayerCallback(in_msg){
 
-  if (in_msg  == "true") {
-		csInterface.evalScript("openInLayer()",openInLayerCallback);
-	} else {
-		csInterface.evalScript("alert('Could not create the substract file!)");
-		csInterface.closeExtension();
-	}
-
-
-}
-
-function openInLayerCallback(in_msg){
   if (in_msg  == "false") {
     csInterface.evalScript("alert('Could not open substract file in a layer!)");
   }
   csInterface.closeExtension();
+
 }
+
 
 function processCanvas(){
 

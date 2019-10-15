@@ -180,15 +180,7 @@ function createData(in_doc, in_name){
   	substractedFile.write(unescape(in_contents)); //creamos el archivo... //unescape --> decodes --> https://www.w3schools.com/jsref/jsref_unescape.asp
   	substractedFile.close();
   	retVal = substractedFile.exists;
-/*
-    var substractedInfoObj = setEnvData(app.activeDocument, substractedFile);
-    if (substractedInfoObj.url == "") {
-      alert("substracterInfoObj empty");
-      //return;
-    }
-    // save preview info in special place where UI can read it later
-    $.setenv('com.fenikkel.HeightmapEditor.substractedData',substractedInfoObj.toSource());
-*/
+
     var doc = app.activeDocument;
     var substractedDoc = app.open(substractedFile);
     substractedDoc.selection.selectAll();
@@ -197,6 +189,7 @@ function createData(in_doc, in_name){
     substractedDoc.close(SaveOptions.DONOTSAVECHANGES);
     app.activeDocument = doc;
     doc.activeLayer = doc.artLayers.add(); //COMPROBAR ESTO
+    doc.activeLayer.name = "Substracted Heightmap";
     doc.paste();
 
   	return retVal.toString();
@@ -204,29 +197,3 @@ function createData(in_doc, in_name){
   }
 
     /*********************************/
-function setEnvData(in_doc, in_file){
-
-    var rulerUnits = app.preferences.rulerUnits;
-    if (app.preferences.rulerUnits != Units.PIXELS) {
-      app.preferences.rulerUnits = Units.PIXELS;
-    }
-    var retVal =
-    {
-      url: "", resolution:in_doc.resolution, width:in_doc.width.value, height:in_doc.height.value,
-      selection: {url: "", resolution:0, rect:{x:0, y:0, width:0, height:0}}
-    }
-
-    retVal.url =  getURL(in_file);
-
-    if (app.preferences.rulerUnits != rulerUnits) {
-      app.preferences.rulerUnits = rulerUnits
-    }
-    return retVal
-}
-
-    /*********************************/
-function openInLayer(){
-
-  //abrimos en la carpa
-
-}

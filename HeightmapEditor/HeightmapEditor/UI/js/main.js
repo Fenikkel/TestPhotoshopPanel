@@ -41,19 +41,7 @@ alert(strH);
    csInterface.closeExtension();
  }
 
- function requestApplyChanges(event) {
 
-   try {
-     //alert("iep");
-     csInterface.requestOpenExtension("com.fenikkel.HeightmapEditor.ApplyChanges", "") //function(extensionId, params)
-    /* setTimeout(function () { //hace la funcion despues de medio segundo
-       prepareEvent("com.fenikkel.event.applyChanges", "parametros")
-     }, 500)
-     */
-   } catch(e) {
-   	alert(e.line + " - " + e);
-   }
- }
 
  function prepareEvent(in_eventStr,in_data) { //dispatches a CEP event
    var msgEvent = new CSEvent(in_eventStr);
@@ -64,7 +52,7 @@ alert(strH);
    csInterface.dispatchEvent(msgEvent);
  }
 
-
+/*
  //Crea un png en tmp con el resultado final del preview
   function createPreviewFile (event) {
     var finalCanvas = $('#cnvsFinal')[0]; //en el nuevo indel.html no esta este canvas ^^'
@@ -92,6 +80,16 @@ alert(strH);
     }
   	csInterface.closeExtension();
   }
+  function requestApplyChanges(event) {
+
+    try {
+      //alert("iep");
+      csInterface.requestOpenExtension("com.fenikkel.HeightmapEditor.ApplyChanges", "") //function(extensionId, params)
+    } catch(e) {
+     alert(e.line + " - " + e);
+    }
+  }
+  */
 
 
   function startApplyChanges() {
@@ -102,6 +100,7 @@ alert(strH);
         var layersIndex = {base: gIndexBase,
                           substracter: gIndexSubstracter};
         prepareEvent("com.fenikkel.event.applyChanges", layersIndex);
+        closeUI();
       }, 500)
 
     } catch(e) {
