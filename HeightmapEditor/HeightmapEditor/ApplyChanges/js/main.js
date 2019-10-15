@@ -2,7 +2,7 @@
 
 console.log("Apply changes started");
 
- var csInterface = new CSInterface(); //crea una instancia de CSInterface
+ var csInterface = new CSInterface();
 
  var gBaseInfo = {};
  var gSubstracterInfo = {};
@@ -15,7 +15,7 @@ console.log("Apply changes started");
 
 
  var gCanvas = document.createElement('canvas');
- var gBCanvas = document.createElement("CANVAS");//document.getElementById("cnvsBase");//document.createElement("CANVAS");
+ var gBCanvas = document.createElement("CANVAS");
  var gSCanvas = document.createElement('canvas');
 
  var gContext = gCanvas.getContext("2d");
@@ -38,6 +38,7 @@ console.log("Apply changes started");
        //substract(); //no porque  process canvas trabaja paralelamente y aun no estan cargados los canvas
        setTimeout(function () {
          substract();
+         decodeData();
        }, 500)
      }, 500)
 
@@ -54,8 +55,7 @@ console.log("Apply changes started");
 
 function substract(){
 
-
-  gContext.fillStyle = "#111111"; //Pinta de VERDE PERO LUEGO LO PINTA TODO DE BLANCO...
+  gContext.fillStyle = "#111111";
 
   gContext.fillRect(0, 0, gCanvas.width, gCanvas.height); //relleno todo el canvas de amarillo
 
@@ -63,9 +63,7 @@ function substract(){
   gBContext = gBCanvas.getContext("2d");
   gSContext = gSCanvas.getContext("2d");
 
-  //NO OBTIENEN LA DATA? METER CADA UNO EN EL RESULTADO FINAL A VER
   var baseData = gBContext.getImageData(0, 0, gBCanvas.width, gBCanvas.height);
-  //alert(baseData);
   var substracterData = gSContext.getImageData(0, 0,  gSCanvas.width, gSCanvas.height);
   var finalData = gContext.getImageData(0, 0,  gCanvas.width, gCanvas.height);
 
@@ -76,7 +74,6 @@ function substract(){
   var blue = 0;
   var alpha = 0;
 
-  //alert(baseData.data.length);
   while (dataIdx < baseData.data.length) {
 
       red = baseData.data[dataIdx] - substracterData.data[dataIdx]; //Red
@@ -118,12 +115,36 @@ function substract(){
 
   }
 
-  gContext.putImageData(finalData, 0, 0); //finalData
-  //gContext.putImageData(finalData, 0, 0); //finalData
-  //gBContext.putImageData(substracterData, 0, 0); //finalData
+  gContext.putImageData(finalData, 0, 0);
+
+}
+
+function decodeData(){
+  var decodedStr = window.atob(gCanvas.toDataURL("image/png",1).replace(/^.+\,/g,"")); // window.atob decodifica : https://www.w3schools.com/jsref/met_win_atob.asp
+  //Explicacion sobre las URLs (URIs) y porque estan codificadas https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+  //replace(/g es modo global) --> https://www.w3schools.com/jsref/jsref_replace.asp
+  //vamos que decodedStr es una data URI que indica el formato de imagen y la compresion
+  csInterface.evalScript("canvasToLayer(\""+escape(decodedStr)+"\")", canvasToLayerCallback); //se llamara la funcion del .jsx que esta dentro la carpeta jsx y el resultado seran las variables de la otra funcion
+  //escape() --> encode a string --> https://www.w3schools.com/jsref/jsref_escape.asp
+}
+
+function canvasToLayerCallback(in_msg){
+
+  if (in_msg  == "true") {
+		csInterface.evalScript("openInLayer()",openInLayerCallback);
+	} else {
+		csInterface.evalScript("alert('Could not create the substract file!)");
+		csInterface.closeExtension();
+	}
 
 
+}
 
+function openInLayerCallback(in_msg){
+  if (in_msg  == "false") {
+    csInterface.evalScript("alert('Could not open substract file in a layer!)");
+  }
+  csInterface.closeExtension();
 }
 
 function processCanvas(){
@@ -148,7 +169,6 @@ function processCanvas(){
 
   gImageBaseData.onload = function () {
     gBContext.drawImage(gImageBaseData, 0, 0, gBCanvas.width, gBCanvas.height);
-    //updatePreview();
   };
   gImageBaseData.src = gBaseInfo.url;
 
@@ -158,8 +178,6 @@ function processCanvas(){
 
   };
   gImageSubstracterData.src = gSubstracterInfo.url;
-
-  //substract();
 
   //alert("base: " + gBaseInfo.url+ "\n" + " substracter" +gSubstracterInfo.url);
 }
