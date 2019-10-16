@@ -101,7 +101,7 @@ alert(strH);
                           substracter: gIndexSubstracter};
         prepareEvent("com.fenikkel.event.applyChanges", layersIndex);
         closeUI();
-      }, 500)
+      }, 1000)
 
     } catch(e) {
     	alert(e.line + " - " + e);

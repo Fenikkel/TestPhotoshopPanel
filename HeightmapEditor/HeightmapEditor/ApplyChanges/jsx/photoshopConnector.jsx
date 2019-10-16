@@ -18,6 +18,7 @@ function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
 
 
   var baseInfoObj = createData(mainDoc, "baseData");
+  alert("baseInfoObj = " + baseInfoObj.toSource());
   if (baseInfoObj.url == "") {
     alert("baseInfoObj empty");
     //return;
@@ -34,8 +35,14 @@ function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
 
 
   // save preview info in special place where UI can read it later
-  $.setenv('com.fenikkel.HeightmapEditor.baseData',baseInfoObj.toSource());
-  $.setenv('com.fenikkel.HeightmapEditor.substracterData',substracterInfoObj.toSource());
+  try{
+    $.setenv('com.fenikkel.HeightmapEditor.baseData', baseInfoObj.toSource());
+    $.setenv('com.fenikkel.HeightmapEditor.substracterData',substracterInfoObj.toSource());
+  }
+  catch(e) {
+    alert(e.line + " - " + e);
+  }
+
 
 
   app.activeDocument = mainDoc;
@@ -155,12 +162,14 @@ function createData(in_doc, in_name){
   function readBaseDataInfo()
   {
   	var retVal = $.getenv('com.fenikkel.HeightmapEditor.baseData');
+    alert("base retval= " +retVal);
   	return retVal;
   }
 
   function readSubstracterDataInfo()
   {
     var retVal = $.getenv('com.fenikkel.HeightmapEditor.substracterData');
+    alert("substracter retval= " +retVal);
     return retVal;
   }
 

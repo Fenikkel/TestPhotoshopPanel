@@ -37,12 +37,15 @@ function initSelectors(){
   //recuerda que el primer elemento de  gAvaliableArtLayers es el length
 
   setBasePrevName(gAvaliableArtLayers[gIndexBase + 1].name);
+  gSelect.selectedIndex = gIndexBase + 1;
 
   var str = "makePreviewBase( \"" +  gAvaliableArtLayers[gIndexBase + 1].name + "\""   + "\,"   +    "\""  + gAvaliableArtLayers[gIndexBase + 1].index  +"\")"; //LA COSA ES QUE TIENES QUe pasar una sola string a evalScript, que esta contenga la funcion con sus variables (que han de ser strings tambien sin ser variables (osea que tenga sus comillas) y ademas has de separarlo por una coma)
 
   csInterface.evalScript(str, paintBaseCanvas);
 
   setSubstracterPrevName(gAvaliableArtLayers[gIndexSubstracter + 1].name);
+  gSelect2.selectedIndex = gIndexSubstracter + 1;
+
 
   var str2 = "makePreviewBase( \"" +  gAvaliableArtLayers[gIndexSubstracter +1].name + "\""   + "\,"   +    "\""  + gAvaliableArtLayers[gIndexSubstracter+1].index  +"\")";
 
