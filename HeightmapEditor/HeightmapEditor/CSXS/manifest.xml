@@ -91,7 +91,7 @@ ExtensionBundleVersion = version del bundle
     			</Resources>
 
     			<Lifecycle>
-    				<AutoVisible>true</AutoVisible>
+    				<AutoVisible>false</AutoVisible>
     			</Lifecycle>
 
     			<UI>

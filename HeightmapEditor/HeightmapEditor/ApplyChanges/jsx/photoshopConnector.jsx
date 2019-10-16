@@ -18,7 +18,7 @@ function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
 
 
   var baseInfoObj = createData(mainDoc, "baseData");
-  alert("baseInfoObj = " + baseInfoObj.toSource());
+  //alert("baseInfoObj = " + baseInfoObj.toSource());
   if (baseInfoObj.url == "") {
     alert("baseInfoObj empty");
     //return;
@@ -162,14 +162,14 @@ function createData(in_doc, in_name){
   function readBaseDataInfo()
   {
   	var retVal = $.getenv('com.fenikkel.HeightmapEditor.baseData');
-    alert("base retval= " +retVal);
+  //  alert("base retval= " +retVal);
   	return retVal;
   }
 
   function readSubstracterDataInfo()
   {
     var retVal = $.getenv('com.fenikkel.HeightmapEditor.substracterData');
-    alert("substracter retval= " +retVal);
+  //  alert("substracter retval= " +retVal);
     return retVal;
   }
 

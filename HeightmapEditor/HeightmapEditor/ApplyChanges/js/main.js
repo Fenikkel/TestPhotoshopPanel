@@ -72,7 +72,7 @@ console.log("Apply changes started");
  }
 
 function substract(){
-  alert("substract");
+  //alert("substract");
 
   var baseData = gBContext.getImageData(0, 0, gBCanvas.width, gBCanvas.height);
   var substracterData = gSContext.getImageData(0, 0,  gSCanvas.width, gSCanvas.height);
@@ -136,7 +136,7 @@ function substract(){
 }
 
 function decodeData(){
-  alert("decodedata");
+  //alert("decodedata");
   var decodedStr = window.atob(gCanvas.toDataURL("image/png",1).replace(/^.+\,/g,"")); // window.atob decodifica : https://www.w3schools.com/jsref/met_win_atob.asp
   //Explicacion sobre las URLs (URIs) y porque estan codificadas https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
   //replace(/g es modo global) --> https://www.w3schools.com/jsref/jsref_replace.asp
@@ -176,7 +176,7 @@ function processCanvas(){ //AQUI FALLA la primera vez que entra
     document.body.appendChild(gSCanvas);
     document.body.appendChild(gCanvas);*/
 
-
+/*
     gContext.fillStyle = "#FFFF11";
     gContext.fillRect(0, 0, parseFloat(gBaseInfo.width), parseFloat(gBaseInfo.height));
 
@@ -185,7 +185,7 @@ function processCanvas(){ //AQUI FALLA la primera vez que entra
 
     gSContext.fillStyle = "#11FFFF";
     gSContext.fillRect(0, 0, parseFloat(gBaseInfo.width), parseFloat(gBaseInfo.height));
-
+*/
 
 
     gImageBaseData.onload = function () {
@@ -216,25 +216,31 @@ function processCanvas(){ //AQUI FALLA la primera vez que entra
    gBaseIndexLayer = event.data.base;
    gSubstracterIndexLayer = event.data.substracter;
 
-   csInterface.evalScript("createTmp( \"" +  gBaseIndexLayer + "\""   + "\,"   +    "\""  + gSubstracterIndexLayer  +"\")"); //aqui porque sino no se actualizan las variables gBaseIndexlayer
+   csInterface.evalScript("createTmp( \"" +  gBaseIndexLayer + "\""   + "\,"   +    "\""  + gSubstracterIndexLayer  +"\")", createTmpCallback); //aqui porque sino no se actualizan las variables gBaseIndexlayer
 
+/*
    setTimeout(function () {
      csInterface.evalScript("readBaseDataInfo()", readBaseDataCallback);
      csInterface.evalScript("readSubstracterDataInfo()", readSubstracterDataCallback);
    }, 3000)
+*/
 
+}
 
+function createTmpCallback(){
+  csInterface.evalScript("readBaseDataInfo()", readBaseDataCallback);
+  csInterface.evalScript("readSubstracterDataInfo()", readSubstracterDataCallback);
 }
 
 function readBaseDataCallback(in_resultStr) {
   if (in_resultStr !== 'false') {
     eval("gBaseInfo = " + in_resultStr)
-    alert("gBaseInfo = " + gBaseInfo);
+    //alert("gBaseInfo = " + gBaseInfo);
     //alert(gBaseInfo.url);
     //loadPreview();
     base=true;
     if(substracter && notDone){
-      alert("entra desde base");
+      //alert("entra desde base");
       base =false;
       substracter = false;
       notDone = false;
@@ -242,7 +248,7 @@ function readBaseDataCallback(in_resultStr) {
       setTimeout(function () {
         substract();
         decodeData();
-      }, 3000)
+      }, 500)
 
     }
 
@@ -254,20 +260,20 @@ function readBaseDataCallback(in_resultStr) {
 function readSubstracterDataCallback(in_resultStr) {
   if (in_resultStr !== 'false') {
     eval("gSubstracterInfo = " + in_resultStr)
-    alert("gSubstracterInfo = " + gSubstracterInfo);
+    //alert("gSubstracterInfo = " + gSubstracterInfo);
 
     substracter = true;
     if(base && notDone){
-      alert("entra desde substracter");
+      //alert("entra desde substracter");
 
       base =false;
       substracter = false;
       notDone = false;
       processCanvas();
-      setTimeout(function () {
+      setTimeout(function () { // eperem a que carreguen les imatges
         substract();
         decodeData();
-      }, 3000)
+      }, 500)
     }
   }
   else{
@@ -279,7 +285,7 @@ function readSubstracterDataCallback(in_resultStr) {
    if (event) {
      //alert("hallo");
      gPreviewInfo = event.data;
-     alert(gPreviewInfo);
+     //alert(gPreviewInfo);
      prepareEvent("com.fenikkel.event.unloadUIPanel");
 
    } else {
