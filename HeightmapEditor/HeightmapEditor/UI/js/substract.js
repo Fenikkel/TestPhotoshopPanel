@@ -67,16 +67,6 @@ function drawSubstract(){
       }
       finalData.data[dataIdx+3] = alpha;
 
-/*
-      //si dejo tranquila  la transparencia ira mas rapido
-      if(alpha < 0){
-        finalData.data[dataIdx+3] = 0;
-      }
-      else{
-        finalData.data[dataIdx+3] = alpha;
-      }
-*/
-
       dataIdx = dataIdx + 4; //pintamos de 4 pixeles en 4
 
   }

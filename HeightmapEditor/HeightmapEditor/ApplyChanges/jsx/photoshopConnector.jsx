@@ -2,23 +2,15 @@
 
 
 function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
-  //alert("llegado");
-  //alert(baseIdx);
-  //alert(substracterIdx);
-
 
   var mainDoc = app.activeDocument;
-  //var tmpDoc = app.documents.add(mainDoc.width, mainDoc.height, mainDoc.resolution, "Heightmap Editor Document", NewDocumentMode.GRAYSCALE);
-  //app.activeDocument = tmpDoc;
 
-  //tmpDoc.artLayers.add();
-  //tmpDoc.artLayers.add();
   app.activeDocument = mainDoc;
   mainDoc.activeLayer = mainDoc.artLayers[baseIdx];//ponemos a active layer la que queremos crear el data; (tenemos que estar en el propio documento)
 
 
   var baseInfoObj = createData(mainDoc, "baseData");
-  //alert("baseInfoObj = " + baseInfoObj.toSource());
+
   if (baseInfoObj.url == "") {
     alert("baseInfoObj empty");
     //return;
@@ -42,8 +34,6 @@ function createTmp(baseIdx, substracterIdx){ //baseIdx, substracterIdx
   catch(e) {
     alert(e.line + " - " + e);
   }
-
-
 
   app.activeDocument = mainDoc;
 

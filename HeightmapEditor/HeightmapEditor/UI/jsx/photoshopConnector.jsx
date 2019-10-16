@@ -23,7 +23,7 @@ function generatePreview(prevName, indx){
 
 	var activeLayer = activeDocument.activeLayer; //guardamos el active layer actual para al final retaurar este como active layer
 	activeDocument.activeLayer = activeDocument.artLayers[indx]; //hacemos que el seleccionado sea active layer para proceder a toda la mandanga
-	activeDocument.activeLayer.visible = true; 
+	activeDocument.activeLayer.visible = true;
 	var previewInfoObj = createPreviews(activeDocument,hasLayerMaskSelected(), prevName); //miramos si tiene una layermask (seleccion?) y creamos los png en funcion
 	if (previewInfoObj.url == "") {
 		alert("failed to create the preview");
@@ -84,9 +84,7 @@ function createPreviews(in_doc,in_isLayerMaskSelected, prevName) {
 				}
 				paste() //hace pegado (a la capa activa del cdocumento activo supongo)
 				//https://gist.github.com/doctyper/992342
-				//app.activeDocument.activeLayer.desaturate();
-				//selectionDoc.activeLayer.desaturate();//CUIDAUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
-				//alert("pausa");
+
 				var selectionFile = File(Folder.temp+"/"+prevName+".png"); //hacemos el path de temp para la seleccion
 				saveToPNG(selectionDoc, selectionFile); //guardamos la seleccion en formato PNG a temp
 				if (selectionFile.exists) { //si se ha creado el archivo (si existe seleccion)
@@ -385,11 +383,6 @@ function readAllLayers ()
 }
 
 
-
-
-//aaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaa
-
-
 //Creates the png with the result that will be applied
 // to the layer or selection
 function storeHeightmapImage(in_contents) {
@@ -415,89 +408,6 @@ function applyChanges() {
 	return gApplySuccessful;
 }
 
-
-// Get the heightmap.png and apply it to layer
-//------------------------------------------------------------------------------
-
-/*function applyChangesFilter() {
-	var totalSteps = 10; // for progress bar
-	app.doForcedProgress('Creating the heightmap...', 'subTask()');
-
-	function subTask() {
-		try {
-			gApplySuccessful = false
-			if (!app.updateProgress(2, totalSteps)) {
-				return false;
-			}
-			var doc = app.activeDocument;
-			var hiddenChannels = getHiddenChannels(doc);
-			var heightFile = File(Folder.temp + "/heightmap.png"); //tiene el substract hecho pero a escala del canvas
-			if (!heightFile.exists) {
-				alert("Cannot find file: " + heightFile.fsName);
-				return;
-			}
-			var heightDoc = app.open(heightFile);
-			if (!app.updateProgress(4, totalSteps)) {
-				return false;
-			}
-			heightDoc.selection.selectAll();
-			heightDoc.selection.copy(true);
-			if (!app.updateProgress(5, totalSteps)) {
-				return false;
-			}
-			heightDoc.close(SaveOptions.DONOTSAVECHANGES);
-			app.activeDocument = doc;
-
-			//test
-
-			var newLayer = activeDocument.artLayers.add();
-			newLayer.name = "Heightmap texture"; //si tenen el mateix nom que?
-			activeDocument.activeLayer = newLayer;
-
-			alert("creado");
-
-			if (!app.updateProgress(6, totalSteps)) {
-				return false;
-			}
-			var hasSelection = false;
-
-			try {
-				makeWorkPath();
-				var pathItems = doc.pathItems["Work Path"];
-				pathItems.makeSelection();
-				if (doc.activeLayer.allLocked) {
-					doc.activeLayer.allLocked = false;
-				}
-				doc.paste(true);
-				hasSelection = true;
-			} catch (e) {
-				doc.paste();
-			}
-
-			if (!app.updateProgress(8, totalSteps)) {
-				return false;
-			}
-			// Merge down layer
-			var idMrgtwo = charIDToTypeID("Mrg2");
-			var desc163 = new ActionDescriptor();
-			executeAction(idMrgtwo, desc163, DialogModes.NO);
-			alert("borrado");
-			if (!app.updateProgress(9, totalSteps)) {
-				return false;
-			}
-			if (hasSelection) {
-				pathItems.makeSelection();
-			}
-			gApplySuccessful = true;
-
-			reinstateHiddenChannels(hiddenChannels);
-
-		} catch (e) {
-			alert("Line: " + e.line + " - " + e);
-		}
-	}
-}
-*/
 
 function applyChangesFilter() {
 	var totalSteps = 10; // for progress bar
@@ -650,21 +560,3 @@ function blockRefresh() {
 	desc.putObject(idT, idPbkO, desc2);
 	executeAction(idsetd, desc, DialogModes.NO);
 }
-
-/*
-function getDocSize(){
-
-	var rulerUnits = app.preferences.rulerUnits;
-	if (app.preferences.rulerUnits != Units.PIXELS) { // posem a pixels la medida
-		app.preferences.rulerUnits = Units.PIXELS;
-	}
-
-	var height = activeDocument.height; //en unit value
-	var width = activeDocument.width; //en unit value
-
-	if (app.preferences.rulerUnits != rulerUnits) { //volvemos a poner las unidades anteriores
-		app.preferences.rulerUnits = rulerUnits
-	}
-
-	return height;
-}*/
